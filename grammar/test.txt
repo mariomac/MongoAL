@@ -1,0 +1,3 @@
+from queteden
+	GROUP BY cosa.arr[45].val AS mierdaca
+	GROUP BY simple As fuck

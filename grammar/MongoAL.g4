@@ -6,23 +6,43 @@
 
 grammar MongoAL;
 
-query: ;
+query: FROM simpleId
+     stage+;
+
+stage : groupStage; // | matchStage | sortStage;
+
+groupStage : GROUP_BY compoundId AS simpleId;
+    
          
 
 
 
-collectionId : LETTER LETTERORDIGIT*;
-
+// values and identifiers
+integer : DIGIT+;
+simpleId : LETTER (LETTER|DIGIT)*;
+compoundId : simpleId (arrayIndex)? (DOT compoundId)?;           
+arrayIndex : LBRACK integer RBRACK;
+             
 // keywords
 FROM : [Ff][Rr][Oo][Mm];
+GROUP_BY : [Gg][Rr][Oo][Uu][Pp]WS[Bb][Yy];
+AS : [Aa][Ss];
+
+// separators
+COMMA   : ',';
+DOT     : '.';
+LBRACK  : '[';
+RBRACK  : ']';
+
+// operators
+
+
 
 // auxiliary
 
-fragment
+
+DIGIT : [0-9];
+
 LETTER : [a-zA-Z$_];
 
-fragment
-LETTERORDIGIT : [a-zA-Z0-9$_];
-
-fragment
-WS  :  [ \t\r\n\u000C]+ -> skip ;
+WS  :  [ \t\r\n\u000C]+ -> skip;
