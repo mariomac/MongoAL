@@ -48,10 +48,19 @@ DE MOMENTO no haremos busquedas sobre arrays, pero sí sobre sus elementos. Por 
 	equivale a
 	{ 'ratings.0': 5 }
 
-
-
 PROJECT <pecifications>
-	(Considerar hacer un project automático entre stages, pero soportarlo para dar un formato final al resultado del aggregation)
+	DE MOMENTO no lo haremos
+	(Considerar hacer un project automático entre stages para solo procesar lo que necesitamos)
+
+SORT BY <field1> ASCENDING, [<field2> DESCENDING]
+
+	SORT BY age ASCENDING, weight DESCENDING
+	equivale a
+	{ $sort : { age : 1, weight -1}}
+
+UNWIND DE momento NO, pero puede ser interesante en el futuro. Quizás hay que hacerlo indirectamente cuando queramos hacer busquedas sobre elementos de arrays
+
+
 
 
 
