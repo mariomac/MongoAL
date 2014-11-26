@@ -3,25 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 grammar MongoAL;
 
-query: FROM simpleId
-     stage+;
+query: FROM SIMPLEID stage+;
 
 stage : groupStage; // | matchStage | sortStage;
 
-groupStage : GROUP_BY compoundId AS simpleId;
-    
-         
+groupStage : GROUP_BY
+             (SIMPLEID |
+             expression AS SIMPLEID); 
+   
+arrayIndex : LBRACK INTEGER RBRACK;
+compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
 
 
+// expressions
 
-// values and identifiers
-integer : DIGIT+;
-simpleId : LETTER (LETTER|DIGIT)*;
-compoundId : simpleId (arrayIndex)? (DOT compoundId)?;           
-arrayIndex : LBRACK integer RBRACK;
+expression : addSubExpr | accumExpr;            
+
+addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)*;
+multDivExpr : atomExpr ((MULT|DIV) atomExpr)*;
+atomExpr    : FLOAT | INTEGER | (LPAR addSubExpr RPAR) | compoundId | negative;
+negative    : SUB addSubExpr;
+              
+accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPUSH | ACCSUM) 
+            LPAR addSubExpr RPAR ;
+              
+
+//LEXER
              
 // keywords
 FROM : [Ff][Rr][Oo][Mm];
@@ -33,16 +42,41 @@ COMMA   : ',';
 DOT     : '.';
 LBRACK  : '[';
 RBRACK  : ']';
+ADD     : '+';
+SUB     : '-';
+MULT    : '*';
+DIV     : '/';
+MOD     : '%';
+LPAR    : '(';
+RPAR    : ')';
 
-// operators
+// accumulators
+ACCADDTOSET : [Aa][Dd][Dd][Tt][Oo][Se][T];
+ACCAVG : [Aa][Vv][Gg];
+ACCFIRST : [Ff][Ii][Rr][Ss][Tt];
+ACCLAST : [Ll][Aa][Ss][Tt];
+ACCMAX : [Mm][Aa][Xx];
+ACCMIN : [Mm][Ii][Nn];
+ACCPUSH : [Pp][Uu][Ss][Hh];
+ACCSUM : [Ss][Uu][Mm];
 
+// LEXER
 
+// values and identifiers
+INTEGER : [ADD|SUB]? DIGIT+;
+FLOAT   : [ADD|SUB]? DIGIT+ (DOT DIGIT+)?;
+SIMPLEID : LETTER ( LETTER |DIGIT)*;
 
 // auxiliary
 
 
-DIGIT : [0-9];
+fragment DIGIT : [0-9] ;
 
-LETTER : [a-zA-Z$_];
+fragment LETTER : [a-zA-Z$_];
 
-WS  :  [ \t\r\n\u000C]+ -> skip;
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) -> skip
+    ;
