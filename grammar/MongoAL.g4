@@ -11,7 +11,9 @@ stage : groupStage; // | matchStage | sortStage;
 
 groupStage : GROUP_BY
              (SIMPLEID |
-             expression AS SIMPLEID); 
+             expression AS SIMPLEID);
+
+matchStage : MATCH logicalExpression;
    
 arrayIndex : LBRACK INTEGER RBRACK;
 compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
@@ -19,7 +21,8 @@ compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
 
 // expressions
 
-expression : addSubExpr | accumExpr;            
+groupExpression : addSubExpr | accumExpr;
+matchExpression : logicalExpression;
 
 addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)*;
 multDivExpr : atomExpr ((MULT|DIV) atomExpr)*;
@@ -27,11 +30,41 @@ atomExpr    : FLOAT | INTEGER | (LPAR addSubExpr RPAR) | compoundId | negative;
 negative    : SUB addSubExpr;
               
 accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPUSH | ACCSUM) 
-            LPAR addSubExpr RPAR ;
-              
+            LPAR addSubExpr RPAR;
+
+// Doesn't allow as much as flexibility as C-like logical expressions, since we are
+// not considering numbers as booleans or vice-versa.
+// E.g. the next expressions are not allowed
+// var2+3 OR var   --> that should be --> var2+3 != 0 OR var!=0
+// (cond OR cond2) == cond5
+ 
+logicalExpression       : orExpression (AND orExpression)*;
+orExpression            : atomLogicalExpression (OR atomLogicalExpression)*;
+atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression;
+
+comparisonExpression    : addSubExpr (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) addSubExpr;
+
+
 
 //LEXER
-             
+
+// LOGICAL OPERATORS
+
+OPAND : [Aa][Nn][Dd];
+OPOR  : [Oo][Rr];
+OPNOT : [Nn][Oo][Tt];
+
+// comparison operators
+
+OPGT  : '>';
+OPGTE : '>=';
+OPLT  : '<';
+OPLTE : '<=';
+OPEQ  : '==';
+OPNEQ : '!=';
+
+// by the moment we don't support OPNOR :
+
 // keywords
 FROM : [Ff][Rr][Oo][Mm];
 GROUP_BY : [Gg][Rr][Oo][Uu][Pp]WS[Bb][Yy];
