@@ -11,7 +11,7 @@ stage : groupStage; // | matchStage | sortStage;
 
 groupStage : GROUP_BY
              (SIMPLEID |
-             expression AS SIMPLEID);
+             groupExpression AS SIMPLEID);
 
 matchStage : MATCH logicalExpression;
    
@@ -37,12 +37,14 @@ accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPU
 // E.g. the next expressions are not allowed
 // var2+3 OR var   --> that should be --> var2+3 != 0 OR var!=0
 // (cond OR cond2) == cond5
- 
-logicalExpression       : orExpression (AND orExpression)*;
-orExpression            : atomLogicalExpression (OR atomLogicalExpression)*;
-atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression;
+
+logicalExpression       : orExpression (OPAND orExpression)*;
+orExpression            : atomLogicalExpression (OPOR atomLogicalExpression)*;
+atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression | OPNOT logicalExpression;
 
 comparisonExpression    : addSubExpr (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) addSubExpr;
+
+
 
 
 
@@ -69,6 +71,8 @@ OPNEQ : '!=';
 FROM : [Ff][Rr][Oo][Mm];
 GROUP_BY : [Gg][Rr][Oo][Uu][Pp]WS[Bb][Yy];
 AS : [Aa][Ss];
+MATCH : [Mm][Aa][Tt][Cc][Hh];
+
 
 // separators
 COMMA   : ',';

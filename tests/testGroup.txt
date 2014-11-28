@@ -1,0 +1,13 @@
+fRoM queteden
+	GROUP BY cosa.arr[45].val AS mierdaca
+	GROUP BY simple-cagarro As fuck
+	GROUP BY ALGO
+	GROUP BY avg(arr[33]*2-var) aS algo
+
+-- Two dashes plus a text separates one test from another
+
+fRoM queteden
+	GROUP BY cosa.arr[45].val AS mierdaca
+	GROUP BY simple-cagarro As fuck
+	GROUP BY ALGO
+	GROUP BY avg(arr[33]*2-var) aS algo
