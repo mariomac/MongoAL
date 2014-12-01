@@ -46,7 +46,7 @@ for file in testfiles do
       puts "#{COLOR_TITLE}--- New test: #{comment}"
       puts "#{COLOR_TESTBLOCK}#{testString}"
       print COLOR_TESTRESULT
-      puts `echo "#{testString}" | java org.antlr.v4.runtime.misc.TestRig #{GRAMMAR_NAME} #{START_RULE} -gui`
+      puts `echo "#{testString}" | java org.antlr.v4.runtime.misc.TestRig #{GRAMMAR_NAME} #{START_RULE}`
     end
   end
 end
