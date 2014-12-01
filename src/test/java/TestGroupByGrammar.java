@@ -1,22 +1,12 @@
+import com.fasterxml.jackson.databind.JsonNode;
 import es.bsc.mongoal.test.ErrorReport;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static es.bsc.mongoal.test.ErrorReport.*;
 
-
-public class TestGroupBy {
-	private static ErrorReport getReport(String queryString) {
-		System.out.println("Executing: " + queryString);
-		MongoALLexer lexer = new MongoALLexer(new org.antlr.v4.runtime.ANTLRInputStream(queryString));
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		MongoALParser parser = new MongoALParser(tokens);
-		parser.removeErrorListeners();
-		ErrorReport report = new ErrorReport();
-		parser.addErrorListener(report);
-		parser.query();
-		return report;
-	}
+public class TestGroupByGrammar {
 
 	@Test
 	public void testTest() {
@@ -46,7 +36,14 @@ public class TestGroupBy {
 				"GROUP BY avg(arr[33]*2-var) aS correctExpression");
 
 		assertTrue(report.isOffending("GROUPBY"));
-
-
+        
+        report = getReport("FROM somecollection");
+        assertEquals(report.count(),0);
+                
+        report = getReport("FROM");
+        assertTrue(report.isOffending("<EOF>"));
+        assertEquals(report.count(),1);
+        
+        
 	}
 }

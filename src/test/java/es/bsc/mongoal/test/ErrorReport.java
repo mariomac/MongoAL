@@ -1,5 +1,7 @@
 package es.bsc.mongoal.test;
 
+import es.bsc.mongoal.MongoALLexer;
+import es.bsc.mongoal.MongoALParser;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -52,4 +54,16 @@ public class ErrorReport implements ANTLRErrorListener {
 	public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
 
 	}
+    
+	public static ErrorReport getReport(String queryString) {
+		System.out.println("Executing: " + queryString);
+		MongoALLexer lexer = new MongoALLexer(new org.antlr.v4.runtime.ANTLRInputStream(queryString));
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MongoALParser parser = new MongoALParser(tokens);
+		parser.removeErrorListeners();
+		ErrorReport report = new ErrorReport();
+		parser.addErrorListener(report);
+		parser.query();
+		return report;
+	}    
 }

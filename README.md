@@ -6,39 +6,39 @@ MongoDB Analytics Language
 
 Sobre ejemplo primero en http://docs.mongodb.org/manual/core/aggregation-pipeline/
 
-FROM orders
-MATCH status = "A"
-GROUP cust_id as _id,
-	  sum(amount) as total
+	FROM orders
+	MATCH status = "A"
+	GROUP cust_id as _id,
+		  sum(amount) as total
 
 Esto devolvería un array de results del estilo {_id:"A123",total:750}
 
 Vamos a soportar las siguientes stages de aquí: http://docs.mongodb.org/manual/reference/operator/aggregation/#aggregation-pipeline-operator-reference
 
-GROUP <expr> as _id,
-	  <accumulator>(<expression>) as fieldName
+	GROUP <expr> as _id,
+		  <accumulator>(<expression>) as fieldName
 
 // group DEBE incluir un campo _id en mongodb, pero puede ser null para que lo calcule todo. Si aquí no se especifica, que sea null
 
 MATCH <query>
 
-<query>:
+	<query>:
 
-<campo> = <valor> equivale a { <campo> : <valor>}
+	<campo> = <valor> equivale a { <campo> : <valor>}
 
-<campo> in ['val1','val2']
-	equivale a
-	{ <campo> : { $in : ['val1','val2']}}
+	<campo> in ['val1','val2']
+		equivale a
+		{ <campo> : { $in : ['val1','val2']}}
 
-<cond> AND <cond> ejemplo
-	type = 'food' AND price < 9.95
-	equivale a
-	{ type: 'food', price: { $lt: 9.95 } }
+	<cond> AND <cond> ejemplo
+		type = 'food' AND price < 9.95
+		equivale a
+		{ type: 'food', price: { $lt: 9.95 } }
 
-<cond> OR <cond> ejemplo
-	qty > 100 OR price < 9.95
-	equivale a
-	{ $or: [ { qty: { $gt: 100 } }, { price: { $lt: 9.95 } } ] }
+	<cond> OR <cond> ejemplo
+		qty > 100 OR price < 9.95
+		equivale a
+		{ $or: [ { qty: { $gt: 100 } }, { price: { $lt: 9.95 } } ] }
 
 DE MOMENTO No soportaremos queries sobre embedded documents
 
@@ -69,7 +69,7 @@ UNWIND DE momento NO, pero puede ser interesante en el futuro. Quizás hay que h
 
 
 
+	
+	<accumulator>
 
-<accumulator>
-
-<expression>
+	<expression>

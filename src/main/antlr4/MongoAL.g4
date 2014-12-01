@@ -1,11 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 grammar MongoAL;
 
-query: FROM SIMPLEID stage+;
+@header {
+    package es.bsc.mongoal;
+    
+    import com.fasterxml.jackson.databind.*;
+}
+
+query
+@init {
+       String collectionName = null;
+       }
+@after {
+        System.out.println("--- ya ta: " + collectionName);
+}
+    : FROM SIMPLEID stage*
+      
+{collectionName = $SIMPLEID.text; }    
+
+    ;
 
 stage : groupStage; // | matchStage | sortStage;
 
@@ -43,9 +55,6 @@ orExpression            : atomLogicalExpression (OPOR atomLogicalExpression)*;
 atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression | OPNOT logicalExpression;
 
 comparisonExpression    : addSubExpr (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) addSubExpr;
-
-
-
 
 
 //LEXER
