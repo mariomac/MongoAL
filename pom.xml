@@ -76,6 +76,7 @@
                 </executions>
                 <configuration>
                     <outputDirectory>target/generated-sources/antlr4/es/bsc/mongoal</outputDirectory>
+                    <visitor>true</visitor>
                 </configuration>
             </plugin>                
         </plugins>

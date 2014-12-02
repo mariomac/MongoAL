@@ -5,20 +5,27 @@
  */
 package es.bsc.mongoal;
 
+import com.mongodb.DBObject;
+
 /**
  *
  * @author mmacias
  */
-public class QueryGenerator extends MongoALBaseListener {
-    @Override
-    public void exitQuery(MongoALParser.QueryContext ctx) {
-        System.out.println("The collection to parse is: " + ctx.collId.getText());                
+public class QueryGenerator extends MongoALBaseVisitor<String[]> {
+
+    public static QueryGenerator instantiate(MongoALParser parser) {
+        add visitor to parser
     }
 
     @Override
-    public void exitStage(MongoALParser.StageContext ctx) {
-        System.out.println("Stage: " + ctx.getText());
+    public String[] visitQuery(MongoALParser.QueryContext ctx) {
+        return super.visitQuery(ctx); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
+    
+    private static class // create here a visitor that generates DBObjects
 
-
+    
+    
 }
