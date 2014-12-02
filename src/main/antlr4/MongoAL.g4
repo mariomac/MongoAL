@@ -4,18 +4,23 @@ grammar MongoAL;
     package es.bsc.mongoal;
     
     import com.fasterxml.jackson.databind.*;
+    import com.mongodb.*;
+    import java.util.ArrayList;
+    import java.util.List;    
 }
 
-query
+query returns [Object[] collectionAndQuery]
 @init {
-       String collectionName = null;
+       $collectionAndQuery = new Object[2];
+       List<DBObject> pipe = new ArrayList<DBObject>();
+       $collectionAndQuery[1] = pipe;
        }
 @after {
-        System.out.println("--- ya ta: " + collectionName);
+        System.out.println("--- ya ta: " + $collectionAndQuery[0]);
 }
     : FROM SIMPLEID stage*
       
-{collectionName = $SIMPLEID.text; }    
+{$collectionAndQuery[0] = $SIMPLEID.text; }    
 
     ;
 
