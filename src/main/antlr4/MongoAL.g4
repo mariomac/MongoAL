@@ -9,20 +9,7 @@ grammar MongoAL;
     import java.util.List;    
 }
 
-query returns [Object[] collectionAndQuery]
-@init {
-       $collectionAndQuery = new Object[2];
-       List<DBObject> pipe = new ArrayList<DBObject>();
-       $collectionAndQuery[1] = pipe;
-       }
-@after {
-        System.out.println("--- ya ta: " + $collectionAndQuery[0]);
-}
-    : FROM SIMPLEID stage*
-      
-{$collectionAndQuery[0] = $SIMPLEID.text; }    
-
-    ;
+query : FROM collId=SIMPLEID stage* ;
 
 stage : groupStage; // | matchStage | sortStage;
 

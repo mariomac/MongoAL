@@ -14,8 +14,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
+import es.bsc.mongoal.MongoALBaseListener;
 import es.bsc.mongoal.MongoALLexer;
 import es.bsc.mongoal.MongoALParser;
+import es.bsc.mongoal.QueryGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -45,7 +47,9 @@ public class TestScratch {
         MongoALLexer lexer = new MongoALLexer(new org.antlr.v4.runtime.ANTLRInputStream(queryString));
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		MongoALParser parser = new MongoALParser(tokens);
-        
+        parser.addParseListener(new QueryGenerator());
+        parser.query();
+        /*
         Object nameAndQuery[] = parser.query().collectionAndQuery;
         
         String collName = (String) nameAndQuery[0];
@@ -74,6 +78,7 @@ public class TestScratch {
         
         ArrayNode an = new ArrayNode(JsonNodeFactory.instance);
         System.out.println(an.toString());
+                */
     }
     
 }

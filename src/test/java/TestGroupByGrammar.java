@@ -5,7 +5,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static es.bsc.mongoal.test.ErrorReport.*;
+import org.junit.Ignore;
 
+@Ignore
 public class TestGroupByGrammar {
 
 	@Test
