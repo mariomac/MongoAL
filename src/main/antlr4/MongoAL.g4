@@ -43,7 +43,7 @@ accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPU
 
 logicalExpression       : orExpression (OPAND orExpression)*;
 orExpression            : atomLogicalExpression (OPOR atomLogicalExpression)*;
-atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression | OPNOT logicalExpression;
+atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression; // | OPNOT logicalExpression;
 
 comparisonExpression    : leftComparison (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) rightComparison;
 

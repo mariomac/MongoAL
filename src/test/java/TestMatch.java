@@ -21,7 +21,9 @@ public class TestMatch {
 		DB db = client.getDB(dbName);
 
 		QueryGenerator query = new QueryGenerator(db);
-		Iterable<DBObject> ret = query.query("FROM events MATCH appId='SimpleApp' AND instanceId < 40 AND instanceId > 5");
+		Iterable<DBObject> ret = query.query("FROM events " +
+				"MATCH NOT (data.metric > 1 and data.metric < 9) ");
+				//"or (data.metric > 4 and data.metric < 4.5)");
 		for(DBObject dbo : ret) {
 			System.out.println(JSON.serialize(dbo));
 		}

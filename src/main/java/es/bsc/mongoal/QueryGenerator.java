@@ -82,18 +82,27 @@ public class QueryGenerator  {
 
         @Override
         public Object visitOrExpression(@NotNull MongoALParser.OrExpressionContext ctx) {
-            // de momento no soporta empalmar ni con ORs ni ANDs, solo la primera expression
-            DBObject atLogExpr = (DBObject) visit(ctx.atomLogicalExpression(0));
-            return atLogExpr;
+            List<MongoALParser.AtomLogicalExpressionContext> atoms = ctx.atomLogicalExpression();
+            if(atoms.size() == 1) {
+                return visit(ctx.atomLogicalExpression(0));
+            } else {
+                BasicDBList dbl = new BasicDBList();
+                for(MongoALParser.AtomLogicalExpressionContext a : atoms) {
+                    dbl.add(visit(a));
+                }
+                return new BasicDBObject("$or",dbl);
+            }
         }
 
         @Override
         public Object visitAtomLogicalExpression(@NotNull MongoALParser.AtomLogicalExpressionContext ctx) {
-            // de momento solo solportamos "comparisonExpression", nada de parentesis o negaciones
-            //if(ctx.comparisonExpression() != null) {
+            // TODO: support NOT operations
+            if(ctx.comparisonExpression() != null) {
                 DBObject comparisonExpression = (DBObject) visit(ctx.comparisonExpression());
                 return comparisonExpression;
-            //}
+            } else if(ctx.LPAR() != null && ctx.RPAR() != null) {
+                return visit(ctx.logicalExpression());
+            } else throw new UnknownError("On: " + ctx.getText());
         }
 
         @Override
