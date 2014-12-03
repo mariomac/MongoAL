@@ -48,7 +48,7 @@ atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression | O
 comparisonExpression    : leftComparison (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) rightComparison;
 
 leftComparison : compoundId;
-rightComparison : STRING | INT | FLOAT;
+rightComparison : STRING | INTEGER | FLOAT;
 
 
 //LEXER
@@ -58,6 +58,7 @@ rightComparison : STRING | INT | FLOAT;
 OPAND : [Aa][Nn][Dd];
 OPOR  : [Oo][Rr];
 OPNOT : [Nn][Oo][Tt];
+OPNOR : [Nn][Oo][Rr];
 
 // comparison operators
 

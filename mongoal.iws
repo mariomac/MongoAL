@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/TestMatch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/es/bsc/mongoal/test/ErrorReport.java" afterPath="$PROJECT_DIR$/src/test/java/es/bsc/mongoal/test/ErrorReport.java" />
+    <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="Initial 'MATCH' tests succesful!">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/antlr4/MongoAL.g4" afterPath="$PROJECT_DIR$/src/main/antlr4/MongoAL.g4" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/TestGroupByGrammar.java" afterPath="$PROJECT_DIR$/src/test/java/TestGroupByGrammar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" afterPath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iml" afterPath="$PROJECT_DIR$/mongoal.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.ipr" afterPath="$PROJECT_DIR$/mongoal.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/TestMatch.java" afterPath="$PROJECT_DIR$/src/test/java/TestMatch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iws" afterPath="$PROJECT_DIR$/mongoal.iws" />
     </list>
     <ignored path="mongoal.iws" />
@@ -80,8 +74,8 @@
           <file leaf-file-name="TestMatch.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/test/java/TestMatch.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.55954325" vertical-offset="2" max-vertical-offset="645">
-                  <caret line="23" column="77" selection-start-line="23" selection-start-column="77" selection-end-line="23" selection-end-column="77" />
+                <state vertical-scroll-proportion="0.5350734" vertical-offset="17" max-vertical-offset="645">
+                  <caret line="23" column="120" selection-start-line="23" selection-start-column="120" selection-end-line="23" selection-end-column="120" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -104,15 +98,15 @@
           <file leaf-file-name="QueryGenerator.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="2130">
-                  <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="696" max-vertical-offset="2595">
+                  <caret line="78" column="53" selection-start-line="78" selection-start-column="53" selection-end-line="78" selection-end-column="53" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1632#1642#0" expanded="true" />
-                    <element signature="e#4733#4734#0" expanded="true" />
-                    <element signature="e#4788#4789#0" expanded="true" />
-                    <element signature="e#4889#4890#0" expanded="true" />
-                    <element signature="e#4944#4945#0" expanded="true" />
+                    <element signature="e#1633#1643#0" expanded="true" />
+                    <element signature="e#6002#6003#0" expanded="true" />
+                    <element signature="e#6057#6058#0" expanded="true" />
+                    <element signature="e#6158#6159#0" expanded="true" />
+                    <element signature="e#6213#6214#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -135,8 +129,8 @@
           <file leaf-file-name="MongoAL.g4" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/antlr4/MongoAL.g4">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6574225" vertical-offset="1262" max-vertical-offset="2010">
-                  <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.36115843" vertical-offset="433" max-vertical-offset="2025">
+                  <caret line="43" column="49" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
                   <folding />
                 </state>
               </provider>
@@ -162,6 +156,7 @@
         <option value="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" />
         <option value="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryException.java" />
         <option value="$PROJECT_DIR$/src/main/antlr4/MongoAL.g4" />
+        <option value="$PROJECT_DIR$/target/generated-sources/antlr4/es/bsc/mongoal/MongoALBaseVisitor.java" />
         <option value="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java" />
         <option value="$PROJECT_DIR$/src/test/java/TestMatch.java" />
       </list>
@@ -820,7 +815,7 @@
       <workItem from="1417442267046" duration="7445000" />
       <workItem from="1417533922970" duration="209000" />
       <workItem from="1417534217222" duration="39000" />
-      <workItem from="1417606693198" duration="6416000" />
+      <workItem from="1417606693198" duration="9390000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project structure">
       <created>1417442365922</created>
@@ -834,15 +829,21 @@
       <option name="project" value="LOCAL" />
       <updated>1417449009536</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial 'MATCH' tests succesful!">
+      <created>1417617882706</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1417617882706</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14109000" />
+    <option name="totallyTimeSpent" value="17083000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -892,7 +893,8 @@
     </option>
     <MESSAGE value="Changed project structure" />
     <MESSAGE value="Added JUnit testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added JUnit testing" />
+    <MESSAGE value="Initial 'MATCH' tests succesful!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial 'MATCH' tests succesful!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1063,22 +1065,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/target/generated-sources/antlr4/es/bsc/mongoal/MongoALBaseVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="2460">
-          <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/antlr4/MongoAL.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6574225" vertical-offset="1262" max-vertical-offset="2010">
-          <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
@@ -1096,28 +1082,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/antlr4/MongoAL.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="2130">
-          <caret line="36" column="45" selection-start-line="36" selection-start-column="45" selection-end-line="36" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1632#1642#0" expanded="true" />
-            <element signature="e#4733#4734#0" expanded="true" />
-            <element signature="e#4788#4789#0" expanded="true" />
-            <element signature="e#4889#4890#0" expanded="true" />
-            <element signature="e#4944#4945#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/removeme/TestScratch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1080">
-          <caret line="27" column="34" selection-start-line="22" selection-start-column="8" selection-end-line="27" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.36115843" vertical-offset="433" max-vertical-offset="2010">
+          <caret line="43" column="49" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1132,10 +1101,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/target/generated-sources/antlr4/es/bsc/mongoal/MongoALBaseVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="2460">
+          <caret line="29" column="7" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="696" max-vertical-offset="2595">
+          <caret line="78" column="53" selection-start-line="78" selection-start-column="53" selection-end-line="78" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1633#1643#0" expanded="true" />
+            <element signature="e#6002#6003#0" expanded="true" />
+            <element signature="e#6057#6058#0" expanded="true" />
+            <element signature="e#6158#6159#0" expanded="true" />
+            <element signature="e#6213#6214#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/removeme/TestScratch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="1080">
+          <caret line="27" column="34" selection-start-line="22" selection-start-column="8" selection-end-line="27" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/TestMatch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55954325" vertical-offset="2" max-vertical-offset="645">
-          <caret line="23" column="77" selection-start-line="23" selection-start-column="77" selection-end-line="23" selection-end-column="77" />
+        <state vertical-scroll-proportion="0.5350734" vertical-offset="17" max-vertical-offset="645">
+          <caret line="23" column="120" selection-start-line="23" selection-start-column="120" selection-end-line="23" selection-end-column="120" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

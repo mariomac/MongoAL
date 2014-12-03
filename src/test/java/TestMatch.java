@@ -21,7 +21,7 @@ public class TestMatch {
 		DB db = client.getDB(dbName);
 
 		QueryGenerator query = new QueryGenerator(db);
-		Iterable<DBObject> ret = query.query("FROM events MATCH nodeId = 'TheSinusNode'");
+		Iterable<DBObject> ret = query.query("FROM events MATCH appId='SimpleApp' AND instanceId < 40 AND instanceId > 5");
 		for(DBObject dbo : ret) {
 			System.out.println(JSON.serialize(dbo));
 		}

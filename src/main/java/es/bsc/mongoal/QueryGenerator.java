@@ -38,7 +38,7 @@ public class QueryGenerator  {
         if(ret[1] == null) {
             return events.find();
         } else {
-            return events.aggregate((List<DBObject>)ret[1]).results();
+            return events.aggregate((List<DBObject>) ret[1]).results();
         }
     }
 
@@ -53,6 +53,7 @@ public class QueryGenerator  {
                 for (MongoALParser.StageContext stage : ctx.stage()) {
                     querieslist.add((DBObject)visit(stage));
                 }
+                System.out.println(JSON.serialize(querieslist));
                 things[1] = querieslist;
             }
             return things;
@@ -67,8 +68,16 @@ public class QueryGenerator  {
         @Override
         public Object visitLogicalExpression(@NotNull MongoALParser.LogicalExpressionContext ctx) {
             // de momento no soporta empalmar ni con ORs ni ANDs, solo la primera expression
-            DBObject orExpr = (DBObject) visit(ctx.orExpression(0));
-            return orExpr;
+            List<MongoALParser.OrExpressionContext> orExprs = ctx.orExpression();
+            if(orExprs.size() == 1) {
+                return visit(ctx.orExpression(0));
+            } else {
+                BasicDBList dbl = new BasicDBList();
+                for(MongoALParser.OrExpressionContext c : orExprs) {
+                    dbl.add(visit(c));
+                }
+                return new BasicDBObject("$and",dbl);
+            }
         }
 
         @Override
@@ -81,18 +90,40 @@ public class QueryGenerator  {
         @Override
         public Object visitAtomLogicalExpression(@NotNull MongoALParser.AtomLogicalExpressionContext ctx) {
             // de momento solo solportamos "comparisonExpression", nada de parentesis o negaciones
-            DBObject comparisonExpression = (DBObject) visit(ctx.comparisonExpression());
-            return comparisonExpression;
+            //if(ctx.comparisonExpression() != null) {
+                DBObject comparisonExpression = (DBObject) visit(ctx.comparisonExpression());
+                return comparisonExpression;
+            //}
         }
 
         @Override
         public Object visitComparisonExpression(@NotNull MongoALParser.ComparisonExpressionContext ctx) {
             DBObject dbo = new BasicDBObject();
-            // TODO: visit other comparison operators
             if(ctx.OPEQ() != null) {
                 dbo.put(
                         ctx.leftComparison().getText(),
                         visit(ctx.rightComparison())
+                );
+            } else {
+                String op = null;
+                if(ctx.OPGT() != null) {
+                    op = "$gt";
+                } else if(ctx.OPGTE() != null) {
+                    op = "$gte";
+                } else if(ctx.OPLT() != null) {
+                    op = "$lt";
+                } else if(ctx.OPLTE() != null) {
+                    op = "$lte";
+                } else if(ctx.OPNEQ() != null) {
+                    op = "$ne";
+                } else if(ctx.OPGTE() != null) {
+                    op = "$gte";
+                } else if(ctx.OPGTE() != null) {
+                    op = "$gte";
+                }
+                dbo.put(
+                        ctx.leftComparison().getText(),
+                        new BasicDBObject(op,visit(ctx.rightComparison()))
                 );
             }
             return dbo;
@@ -107,10 +138,10 @@ public class QueryGenerator  {
                 return content.substring(1,length-1);
             } else if(ctx.FLOAT() != null) {
                 return Float.valueOf(ctx.getText());
-            } else if(ctx.INT() != null) {
+            } else if(ctx.INTEGER() != null) {
                 return Integer.valueOf(ctx.getText());
             } else {
-                throw new UnknownError("Right operator: no string, no int, no float?");
+                throw new UnknownError("Right operator: no string, no int, no float? In: " + ctx.getText());
             }
         }
 
