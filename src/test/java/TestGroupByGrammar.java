@@ -13,11 +13,11 @@ public class TestGroupByGrammar {
 	@Test
 	public void testTest() {
 
-		ErrorReport report = getReport("FROM someCollection " +
-				"GROUP BY cosa.arr[45].val AS bad name " +
-				"GROUP BY simpleId As goodName " +
-				"GROUP BY SOMETHING " +
-				"GROUP BY avg(arr[33]*2-var) aS correctExpression");
+		ErrorReport report = getReport("FROM someCollection \n" +
+				"GROUP BY cosa.arr[45].val AS bad name \n" +
+				"GROUP BY simpleId As goodName \n" +
+				"GROUP BY SOMETHING \n" +
+				"GROUP BY avg(arr[33]*2-var) aS correctExpression\n");
 
 		assertTrue(report.isOffending("name"));
 		assertFalse(report.isOffending("SOMETHING"));

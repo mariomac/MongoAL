@@ -5,32 +5,18 @@
  */
 package removeme;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.util.JSON;
-import es.bsc.mongoal.MongoALBaseListener;
-import es.bsc.mongoal.MongoALLexer;
-import es.bsc.mongoal.MongoALParser;
-import es.bsc.mongoal.QueryGenerator;
-import java.util.ArrayList;
-import java.util.List;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *
  * @author mmacias
  */
+@Ignore
 public class TestScratch {    
     @Test
     public void testScratch() throws Exception {
-        MongoClient client;
+       /* MongoClient client;
         DB db;
         DBCollection events;
         
@@ -49,7 +35,7 @@ public class TestScratch {
 		MongoALParser parser = new MongoALParser(tokens);
         parser.addParseListener(new QueryGenerator());
         parser.query();
-        /*
+
         Object nameAndQuery[] = parser.query().collectionAndQuery;
         
         String collName = (String) nameAndQuery[0];

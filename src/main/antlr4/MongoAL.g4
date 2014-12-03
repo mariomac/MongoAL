@@ -11,7 +11,7 @@ grammar MongoAL;
 
 query : FROM collId=SIMPLEID stage* ;
 
-stage : groupStage; // | matchStage | sortStage;
+stage : groupStage | matchStage ; // | sortStage;
 
 groupStage : GROUP_BY
              (SIMPLEID |
@@ -26,7 +26,6 @@ compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
 // expressions
 
 groupExpression : addSubExpr | accumExpr;
-matchExpression : logicalExpression;
 
 addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)*;
 multDivExpr : atomExpr ((MULT|DIV) atomExpr)*;
@@ -46,7 +45,10 @@ logicalExpression       : orExpression (OPAND orExpression)*;
 orExpression            : atomLogicalExpression (OPOR atomLogicalExpression)*;
 atomLogicalExpression   : LPAR logicalExpression RPAR | comparisonExpression | OPNOT logicalExpression;
 
-comparisonExpression    : addSubExpr (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) addSubExpr;
+comparisonExpression    : leftComparison (OPGT|OPGTE|OPLT|OPLTE|OPEQ|OPNEQ) rightComparison;
+
+leftComparison : compoundId;
+rightComparison : STRING | INT | FLOAT;
 
 
 //LEXER
@@ -63,7 +65,7 @@ OPGT  : '>';
 OPGTE : '>=';
 OPLT  : '<';
 OPLTE : '<=';
-OPEQ  : '==';
+OPEQ  : '=';
 OPNEQ : '!=';
 
 // by the moment we don't support OPNOR :
@@ -104,6 +106,13 @@ ACCSUM : [Ss][Uu][Mm];
 INTEGER : [ADD|SUB]? DIGIT+;
 FLOAT   : [ADD|SUB]? DIGIT+ (DOT DIGIT+)?;
 SIMPLEID : LETTER ( LETTER |DIGIT)*;
+
+// strings can be surronded by 'simple' or "double" commas
+STRING :  ('"' (ESC_CHAR | ~["\\])* '"') | ('\'' (ESC_CHAR | ~[\'\\])* '\'');
+
+fragment ESC_CHAR :   '\\' (["\\/bfnrt] | UNICODE) ;
+fragment UNICODE : 'u' HEX HEX HEX HEX ;
+fragment HEX : [0-9a-fA-F] ;
 
 // auxiliary
 
