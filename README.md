@@ -3,6 +3,12 @@ MongoAL
 
 MongoDB Analytics Language
 
+To do
+-----
+
+* Use $exists operator in queries: http://docs.mongodb.org/manual/reference/operator/query/exists/#op._S_exists
+
+
 
 Sobre ejemplo primero en http://docs.mongodb.org/manual/core/aggregation-pipeline/
 

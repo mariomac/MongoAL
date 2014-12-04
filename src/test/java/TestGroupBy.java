@@ -8,11 +8,11 @@ import org.junit.Test;
 import java.net.UnknownHostException;
 
 /**
- * Created by mmacias on 3/12/14.
+ * Created by mmacias on 4/12/14.
  */
-public class TestMatch {
+public class TestGroupBy {
 	@Test
-	public void testMatch() throws UnknownHostException {
+	public void testGroupBy() throws UnknownHostException {
 		String host = "localhost";
 		int port = 27017;
 		String dbName = "applicationmonitor";
@@ -22,8 +22,8 @@ public class TestMatch {
 
 		QueryGenerator query = new QueryGenerator(db);
 		Iterable<DBObject> ret = query.query("FROM events " +
-				"MATCH (data.metric > 1 and data.metric < 9) ");
-				//"or (data.metric > 4 and data.metric < 4.5)");
+				"GROUP BY timestamp - timestamp % 1000000");
+		//"or (data.metric > 4 and data.metric < 4.5)");
 		for(DBObject dbo : ret) {
 			System.out.println(JSON.serialize(dbo));
 		}
@@ -37,3 +37,4 @@ public class TestMatch {
 //		}
 	}
 }
+

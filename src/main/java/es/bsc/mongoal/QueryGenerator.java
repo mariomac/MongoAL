@@ -33,7 +33,7 @@ public class QueryGenerator  {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MongoALParser parser = new MongoALParser(tokens);
         Object[] ret = (Object[]) queryVisitor.visitQuery(parser.query());
-
+        System.out.println(JSON.serialize(ret[1]));
         DBCollection events = database.getCollection((String)ret[0]);
         if(ret[1] == null) {
             return events.find();
@@ -53,7 +53,6 @@ public class QueryGenerator  {
                 for (MongoALParser.StageContext stage : ctx.stage()) {
                     querieslist.add((DBObject)visit(stage));
                 }
-                System.out.println(JSON.serialize(querieslist));
                 things[1] = querieslist;
             }
             return things;
@@ -67,7 +66,6 @@ public class QueryGenerator  {
 
         @Override
         public Object visitLogicalExpression(@NotNull MongoALParser.LogicalExpressionContext ctx) {
-            // de momento no soporta empalmar ni con ORs ni ANDs, solo la primera expression
             List<MongoALParser.OrExpressionContext> orExprs = ctx.orExpression();
             if(orExprs.size() == 1) {
                 return visit(ctx.orExpression(0));
@@ -143,7 +141,7 @@ public class QueryGenerator  {
             if(ctx.STRING() != null) {
                 String content = ctx.STRING().getText();
                 int length = content.length();
-                // removes initial and final 'simple' of "double" commas
+                // removes initial and final 'simple' or "double" commas
                 return content.substring(1,length-1);
             } else if(ctx.FLOAT() != null) {
                 return Float.valueOf(ctx.getText());
@@ -155,23 +153,103 @@ public class QueryGenerator  {
         }
 
         @Override
+        public Object visitGroupStage(@NotNull MongoALParser.GroupStageContext ctx) {
+            DBObject query = new BasicDBObject();
+            if(ctx.NOTHING() != null) {
+                query.put("_id",null);
+            } else {
+                query.put("_id",visit(ctx.addSubExpr()));
+            }
+            return new BasicDBObject("$group",query);
+        }
+
+        @Override
+        public Object visitCompoundId(@NotNull MongoALParser.CompoundIdContext ctx) {
+            StringBuilder sb = new StringBuilder(ctx.SIMPLEID().getText());
+            if(ctx.arrayIndex() != null) {
+                sb.append(".").append(visit(ctx.arrayIndex()));
+            }
+            if(ctx.compoundId() != null) {
+                sb.append(".").append(visit(ctx.compoundId()));
+            }
+            return sb;
+        }
+
+        @Override
+        public Object visitAccumExpr(@NotNull MongoALParser.AccumExprContext ctx) {
+            return super.visitAccumExpr(ctx);
+        }
+
+        @Override
+        public Object visitArrayIndex(@NotNull MongoALParser.ArrayIndexContext ctx) {
+            return ctx.INTEGER().getText();
+        }
+
+        @Override
         public Object visitAddSubExpr(@NotNull MongoALParser.AddSubExprContext ctx) {
-            return super.visitAddSubExpr(ctx);
+            BasicDBList multDivExprs = null;
+            String operator = null;
+            if(ctx.ADD() != null) {
+                operator = "$add";
+                multDivExprs = new BasicDBList();
+            } else if(ctx.SUB() != null) {
+                operator = "$subtract";
+                multDivExprs = new BasicDBList();
+            }
+            if(multDivExprs == null) {
+                return visit(ctx.multDivExpr(0));
+            } else {
+                multDivExprs.add(visit(ctx.multDivExpr(0)));
+                multDivExprs.add(visit(ctx.multDivExpr(1)));
+                return new BasicDBObject(operator,multDivExprs);
+            }
         }
 
         @Override
         public Object visitMultDivExpr(@NotNull MongoALParser.MultDivExprContext ctx) {
-            return super.visitMultDivExpr(ctx);
+            BasicDBList atomExprs = null;
+            String operator = null;
+            if(ctx.MULT() != null) {
+                operator = "$multiply";
+                atomExprs = new BasicDBList();
+            } else if(ctx.DIV() != null) {
+                operator = "$divide";
+                atomExprs = new BasicDBList();
+            } else if(ctx.MOD() != null) {
+                operator = "$mod";
+                atomExprs = new BasicDBList();
+            }
+            if(atomExprs == null) {
+                return visit(ctx.atomExpr(0));
+            } else {
+                atomExprs.add(visit(ctx.atomExpr(0)));
+                atomExprs.add(visit(ctx.atomExpr(1)));
+                return new BasicDBObject(operator,atomExprs);
+            }
         }
 
         @Override
         public Object visitAtomExpr(@NotNull MongoALParser.AtomExprContext ctx) {
-            return super.visitAtomExpr(ctx);
+            if(ctx.FLOAT() != null) {
+                return Float.valueOf(ctx.FLOAT().getText());
+            } else if(ctx.INTEGER() != null) {
+                return Integer.valueOf(ctx.INTEGER().getText());
+            } else if(ctx.LPAR() != null && ctx.RPAR() != null) {
+                return visit(ctx.addSubExpr());
+            } else if(ctx.compoundId() != null) {
+                return "$"+visit(ctx.compoundId());
+            } else if(ctx.negative() != null) {
+                return visit(ctx.negative());
+            } else throw new UnknownError("WTF: "  + ctx.getText());
         }
 
         @Override
         public Object visitNegative(@NotNull MongoALParser.NegativeContext ctx) {
-            return super.visitNegative(ctx);
+            BasicDBList dbl = new BasicDBList();
+            dbl.add(0);
+            dbl.add(visit(ctx.addSubExpr()));
+            return new BasicDBObject("$subtract",dbl);
+
         }
     }// create here a visitor that generates DBObjects
 

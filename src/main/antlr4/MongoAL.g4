@@ -13,9 +13,8 @@ query : FROM collId=SIMPLEID stage* ;
 
 stage : groupStage | matchStage ; // | sortStage;
 
-groupStage : GROUP_BY
-             (SIMPLEID |
-             groupExpression AS SIMPLEID);
+groupStage : GROUP_BY (addSubExpr | NOTHING)
+            (SIMPLEID AS accumExpression)*;
 
 matchStage : MATCH logicalExpression;
    
@@ -25,15 +24,15 @@ compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
 
 // expressions
 
-groupExpression : addSubExpr | accumExpr;
+accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPUSH | ACCSUM)
+            LPAR addSubExpr RPAR;
 
-addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)*;
-multDivExpr : atomExpr ((MULT|DIV) atomExpr)*;
+addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)?;
+multDivExpr : atomExpr ((MULT|DIV|MOD) atomExpr)?;
 atomExpr    : FLOAT | INTEGER | (LPAR addSubExpr RPAR) | compoundId | negative;
 negative    : SUB addSubExpr;
               
-accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPUSH | ACCSUM) 
-            LPAR addSubExpr RPAR;
+
 
 // Doesn't allow as much as flexibility as C-like logical expressions, since we are
 // not considering numbers as booleans or vice-versa.
@@ -74,6 +73,7 @@ OPNEQ : '!=';
 // keywords
 FROM : [Ff][Rr][Oo][Mm];
 GROUP_BY : [Gg][Rr][Oo][Uu][Pp]WS[Bb][Yy];
+NOTHING : [Nn][Oo][Tt][Hh][Ii][Nn][Gg];
 AS : [Aa][Ss];
 MATCH : [Mm][Aa][Tt][Cc][Hh];
 
