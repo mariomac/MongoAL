@@ -22,7 +22,13 @@ public class TestGroupBy {
 
 		QueryGenerator query = new QueryGenerator(db);
 		Iterable<DBObject> ret = query.query("FROM events " +
-				"GROUP BY timestamp - timestamp % 1000000");
+				"GROUP BY NOTHING \n" +
+				"avg(timestamp) AS avgtime\n"+
+				"max(timestamp) AS maxtime\n"+
+				"min(timestamp) as mintime\n"+
+						"avg(jarpleich) as jarpleicher"
+		);
+
 		//"or (data.metric > 4 and data.metric < 4.5)");
 		for(DBObject dbo : ret) {
 			System.out.println(JSON.serialize(dbo));

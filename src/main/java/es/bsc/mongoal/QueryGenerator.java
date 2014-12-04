@@ -9,10 +9,12 @@ import com.mongodb.*;
 import com.mongodb.util.JSON;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  *
@@ -158,7 +160,15 @@ public class QueryGenerator  {
             if(ctx.NOTHING() != null) {
                 query.put("_id",null);
             } else {
-                query.put("_id",visit(ctx.addSubExpr()));
+                query.put("_id", visit(ctx.addSubExpr()));
+            }
+            ListIterator<TerminalNode> simpleIds = ctx.SIMPLEID().listIterator();
+            ListIterator<MongoALParser.AccumExprContext> accumExprs = ctx.accumExpr().listIterator();
+            while(simpleIds.hasNext() && accumExprs.hasNext()) {
+                query.put(
+                        simpleIds.next().getText(),
+                        visit(accumExprs.next())
+                );
             }
             return new BasicDBObject("$group",query);
         }
@@ -177,7 +187,25 @@ public class QueryGenerator  {
 
         @Override
         public Object visitAccumExpr(@NotNull MongoALParser.AccumExprContext ctx) {
-            return super.visitAccumExpr(ctx);
+            String opName = null;
+            if(ctx.ACCADDTOSET() != null) {
+                opName = "$addToSet";
+            } else if(ctx.ACCAVG() != null) {
+                opName = "$avg";
+            } else if(ctx.ACCFIRST() != null) {
+                opName = "$first";
+            } else if(ctx.ACCLAST() != null) {
+                opName = "$last";
+            } else if(ctx.ACCMAX() != null) {
+                opName = "$max";
+            } else if(ctx.ACCMIN() != null) {
+                opName = "$min";
+            } else if(ctx.ACCPUSH() != null) {
+                opName = "$push";
+            } else if(ctx.ACCSUM() != null) {
+                opName = "$sum";
+            } else throw new UnknownError("visitAccumExpr WTF: " + ctx.getText());
+            return new BasicDBObject(opName,visit(ctx.addSubExpr()));
         }
 
         @Override

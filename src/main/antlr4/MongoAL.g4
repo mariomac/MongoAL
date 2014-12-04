@@ -14,7 +14,7 @@ query : FROM collId=SIMPLEID stage* ;
 stage : groupStage | matchStage ; // | sortStage;
 
 groupStage : GROUP_BY (addSubExpr | NOTHING)
-            (SIMPLEID AS accumExpression)*;
+            (accumExpr AS SIMPLEID)*;
 
 matchStage : MATCH logicalExpression;
    

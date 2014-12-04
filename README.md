@@ -7,7 +7,7 @@ To do
 -----
 
 * Use $exists operator in queries: http://docs.mongodb.org/manual/reference/operator/query/exists/#op._S_exists
-
+* Unit testing with Embedded Mongo: http://www.hascode.com/2013/10/writing-java-integration-tests-for-mongodb/ or similar
 
 
 Sobre ejemplo primero en http://docs.mongodb.org/manual/core/aggregation-pipeline/
