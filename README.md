@@ -64,7 +64,7 @@ PROJECT <pecifications>
 	DE MOMENTO no lo haremos
 	(Considerar hacer un project automático entre stages para solo procesar lo que necesitamos)
 
-SORT BY <field1> ASCENDING, [<field2> DESCENDING]
+SORT BY <field1> ASCENDING [<field2> DESCENDING]
 
 	SORT BY age ASCENDING, weight DESCENDING
 	equivale a

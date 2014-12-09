@@ -45,7 +45,7 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>[2.12.4,2.13)</version>
             <scope>compile</scope>
-        </dependency>      
+        </dependency>
     </dependencies>
 
   <!--
@@ -75,10 +75,29 @@
                     </execution>
                 </executions>
                 <configuration>
+
                     <outputDirectory>target/generated-sources/antlr4/es/bsc/mongoal</outputDirectory>
                     <visitor>true</visitor>
                 </configuration>
-            </plugin>                
+            </plugin>
+            <!--plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>test.xsd</includes>
+                    <schemaDirectory>${project.basedir}/src/test/xsd</schemaDirectory>
+                    <packageName>es.bsc.mongoal.test</packageName>
+                </configuration>
+            </plugin-->
         </plugins>
     </build>
     

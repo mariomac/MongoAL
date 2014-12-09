@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:complexType name="ALTest">
+		<xs:sequence>
+			<xs:element name="Description" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="Query" type="xs:string" maxOccurs="1" minOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string" >
+					<xs:enumeration value="Grammar"/>
+					<xs:enumeration value="Query"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="ALTestSuite">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ALTest" type="ALTest"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

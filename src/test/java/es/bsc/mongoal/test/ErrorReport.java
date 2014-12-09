@@ -57,13 +57,14 @@ public class ErrorReport implements ANTLRErrorListener {
 	}
     
 	public static ErrorReport getReport(String queryString) {
-		/*System.out.println("Executing: " + queryString);
+		MongoALLexer lexer = new MongoALLexer(new org.antlr.v4.runtime.ANTLRInputStream(queryString));
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MongoALParser parser = new MongoALParser(tokens);
+		System.out.println("Executing: " + queryString);
 		parser.removeErrorListeners();
 		ErrorReport report = new ErrorReport();
 		parser.addErrorListener(report);
-		String[] things = visitor.visit(parser.query());
-		System.out.println("things[0] = " + things[0]);
-		System.out.println("things[1] = " + things[1]);
-		return report;*/ return null;
-	}    
+		parser.query();
+		return report;
+	}
 }

@@ -3,6 +3,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 import es.bsc.mongoal.QueryGenerator;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.UnknownHostException;
@@ -10,6 +11,8 @@ import java.net.UnknownHostException;
 /**
  * Created by mmacias on 3/12/14.
  */
+@Ignore
+
 public class TestMatch {
 	@Test
 	public void testMatch() throws UnknownHostException {

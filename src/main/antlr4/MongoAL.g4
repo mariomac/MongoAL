@@ -2,16 +2,11 @@ grammar MongoAL;
 
 @header {
     package es.bsc.mongoal;
-    
-    import com.fasterxml.jackson.databind.*;
-    import com.mongodb.*;
-    import java.util.ArrayList;
-    import java.util.List;    
 }
 
 query : FROM collId=SIMPLEID stage* ;
 
-stage : groupStage | matchStage ; // | sortStage;
+stage : groupStage | matchStage | sortStage;
 
 groupStage : GROUP_BY (addSubExpr | NOTHING)
             (accumExpr AS SIMPLEID)*;
@@ -23,8 +18,8 @@ compoundId : SIMPLEID (arrayIndex)? (DOT compoundId)?;
 
 
 // expressions
-
-accumExpr : (ACCADDTOSET | ACCAVG | ACCFIRST | ACCLAST | ACCMAX | ACCMIN | ACCPUSH | ACCSUM)
+// simpleid stores the accumulator
+accumExpr : SIMPLEID
             LPAR addSubExpr RPAR;
 
 addSubExpr  : multDivExpr ( (ADD|SUB) multDivExpr)?;
@@ -32,6 +27,8 @@ multDivExpr : atomExpr ((MULT|DIV|MOD) atomExpr)?;
 atomExpr    : FLOAT | INTEGER | (LPAR addSubExpr RPAR) | compoundId | negative;
 negative    : SUB addSubExpr;
               
+sortStage : SORT_BY sortCriteria (COMMA sortCriteria)*;
+sortCriteria : compoundId (ASCENDING|DESCENDING)?;
 
 
 // Doesn't allow as much as flexibility as C-like logical expressions, since we are
@@ -76,7 +73,9 @@ GROUP_BY : [Gg][Rr][Oo][Uu][Pp]WS[Bb][Yy];
 NOTHING : [Nn][Oo][Tt][Hh][Ii][Nn][Gg];
 AS : [Aa][Ss];
 MATCH : [Mm][Aa][Tt][Cc][Hh];
-
+SORT_BY : [Ss][Oo][Rr][Tt]WS[Bb][Yy];
+ASCENDING : [Aa][Ss][Cc][Ee][Nn][Dd][Ii][Nn][Gg];
+DESCENDING : [Dd][Ee][Ss][Cc][Ee][Nn][Dd][Ii][Nn][Gg];
 
 // separators
 COMMA   : ',';
@@ -90,16 +89,6 @@ DIV     : '/';
 MOD     : '%';
 LPAR    : '(';
 RPAR    : ')';
-
-// accumulators
-ACCADDTOSET : [Aa][Dd][Dd][Tt][Oo][Se][T];
-ACCAVG : [Aa][Vv][Gg];
-ACCFIRST : [Ff][Ii][Rr][Ss][Tt];
-ACCLAST : [Ll][Aa][Ss][Tt];
-ACCMAX : [Mm][Aa][Xx];
-ACCMIN : [Mm][Ii][Nn];
-ACCPUSH : [Pp][Uu][Ss][Hh];
-ACCSUM : [Ss][Uu][Mm];
 
 // LEXER
 

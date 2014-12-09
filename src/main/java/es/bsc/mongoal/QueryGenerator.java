@@ -31,6 +31,7 @@ public class QueryGenerator  {
     }
 
     public Iterable<DBObject> query(String queryString) {
+
         MongoALLexer lexer = new MongoALLexer(new org.antlr.v4.runtime.ANTLRInputStream(queryString));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MongoALParser parser = new MongoALParser(tokens);
@@ -188,21 +189,22 @@ public class QueryGenerator  {
         @Override
         public Object visitAccumExpr(@NotNull MongoALParser.AccumExprContext ctx) {
             String opName = null;
-            if(ctx.ACCADDTOSET() != null) {
+            String id = ctx.SIMPLEID().getText().trim();
+            if(id.equalsIgnoreCase("addtoset")) {
                 opName = "$addToSet";
-            } else if(ctx.ACCAVG() != null) {
+            } else if(id.equalsIgnoreCase("avg")) {
                 opName = "$avg";
-            } else if(ctx.ACCFIRST() != null) {
+            } else if(id.equalsIgnoreCase("first")) {
                 opName = "$first";
-            } else if(ctx.ACCLAST() != null) {
+            } else if(id.equalsIgnoreCase("last")) {
                 opName = "$last";
-            } else if(ctx.ACCMAX() != null) {
+            } else if(id.equalsIgnoreCase("max")) {
                 opName = "$max";
-            } else if(ctx.ACCMIN() != null) {
+            } else if(id.equalsIgnoreCase("min")) {
                 opName = "$min";
-            } else if(ctx.ACCPUSH() != null) {
+            } else if(id.equalsIgnoreCase("push")) {
                 opName = "$push";
-            } else if(ctx.ACCSUM() != null) {
+            } else if(id.equalsIgnoreCase("sum")) {
                 opName = "$sum";
             } else throw new UnknownError("visitAccumExpr WTF: " + ctx.getText());
             return new BasicDBObject(opName,visit(ctx.addSubExpr()));
@@ -279,8 +281,18 @@ public class QueryGenerator  {
             return new BasicDBObject("$subtract",dbl);
 
         }
-    }// create here a visitor that generates DBObjects
 
-    
-    
+        @Override
+        public Object visitSortStage(@NotNull MongoALParser.SortStageContext ctx) {
+            BasicDBObject sortFields = new BasicDBObject();
+            for(MongoALParser.SortCriteriaContext sortCriteria : ctx.sortCriteria()) {
+                int order = 1; // by default, ascending ORDER
+                if(sortCriteria.DESCENDING() != null) {
+                    order = -1;
+                }
+                sortFields.put(visit(sortCriteria.compoundId()).toString(),order);
+            }
+            return new BasicDBObject("$sort", sortFields);
+        }
+    }
 }
