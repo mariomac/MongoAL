@@ -1,7 +1,7 @@
 MongoAL
 =======
 
-MongoDB Analytics Language
+MongoDB Aggregation Language
 
 It translates a query like this:
 
