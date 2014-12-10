@@ -23,3 +23,16 @@ Into something like this:
 				"FieldsSum" : { "$sum" : { "$add" : [ "$obj.prop" , "$val1"]}}}} ,
 		{ "$sort" : { "FieldsSum" : -1}}
 		]);
+
+To include MongoAL in your Maven project:
+
+	<repositories>
+	    <repository>
+	        <id>mongoal-mvn-repo</id>
+	        <url>https://raw.githubusercontent.com/mariomac/MongoAL/master/mvn-repo</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	            <!--updatePolicy>always</updatePolicy-->
+	        </snapshots>
+	    </repository>
+	</repositories>
