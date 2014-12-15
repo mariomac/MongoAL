@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" afterPath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iws" afterPath="$PROJECT_DIR$/mongoal.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
     </list>
     <ignored path="mongoal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,8 +99,8 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1772357" vertical-offset="896" max-vertical-offset="1845">
-              <caret line="108" column="93" selection-start-line="108" selection-start-column="93" selection-end-line="108" selection-end-column="93" />
+            <state vertical-scroll-proportion="0.17128874" vertical-offset="0" max-vertical-offset="1845">
+              <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -165,10 +165,10 @@
         <option value="$PROJECT_DIR$/src/main/antlr4/MongoAL.g4" />
         <option value="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryException.java" />
         <option value="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryGenerator.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryVisitor.java" />
         <option value="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -941,7 +941,7 @@
       <workItem from="1418223776955" duration="2821000" />
       <workItem from="1418229421279" duration="549000" />
       <workItem from="1418305562742" duration="535000" />
-      <workItem from="1418652119161" duration="1403000" />
+      <workItem from="1418652119161" duration="2068000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project structure">
       <created>1417442365922</created>
@@ -983,17 +983,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42951000" />
+    <option name="totallyTimeSpent" value="43616000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32740587" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32809225" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978058" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1470,8 +1470,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1772357" vertical-offset="896" max-vertical-offset="1845">
-          <caret line="108" column="93" selection-start-line="108" selection-start-column="93" selection-end-line="108" selection-end-column="93" />
+        <state vertical-scroll-proportion="0.17128874" vertical-offset="0" max-vertical-offset="1845">
+          <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
           <folding />
         </state>
       </provider>
