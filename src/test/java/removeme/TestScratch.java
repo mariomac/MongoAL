@@ -147,11 +147,11 @@ public class TestScratch extends TestCase {
         //TODO: GROUP BY val1 AS OrderValue should fail
         String queryString = "FROM docs\n" +
                 "MATCH obj.prop > 3 \n" +
-                "GROUP BY val1 \n" +
+                "GROUP BY val1-obj.prop \n" +
                 "sum(val1) AS Field1 \n" +
                 "sum(obj.prop) AS Field2 \n" +
                 "sum(obj.prop + val1) AS FieldsSum \n" +
-                "SORT BY FieldsSum DESCENDING";
+                "SORT BY _id ASCENDING";
         System.out.println(queryString);
         for(DBObject dbo : query.query(queryString)) {
             System.out.println(JSON.serialize(dbo));

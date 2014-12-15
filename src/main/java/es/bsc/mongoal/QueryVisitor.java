@@ -114,7 +114,7 @@ class QueryVisitor extends MongoALBaseVisitor<Object> {
 		} else if(ctx.FLOAT() != null) {
 			return Float.valueOf(ctx.getText());
 		} else if(ctx.INTEGER() != null) {
-			return Integer.valueOf(ctx.getText());
+			return Long.valueOf(ctx.getText());
 		} else {
 			throw new QueryException("Right operator: no string, no int, no float? In: " + ctx.getText());
 		}
@@ -228,7 +228,7 @@ class QueryVisitor extends MongoALBaseVisitor<Object> {
 		if(ctx.FLOAT() != null) {
 			return Float.valueOf(ctx.FLOAT().getText());
 		} else if(ctx.INTEGER() != null) {
-			return Integer.valueOf(ctx.INTEGER().getText());
+			return Long.valueOf(ctx.INTEGER().getText());
 		} else if(ctx.LPAR() != null && ctx.RPAR() != null) {
 			return visit(ctx.addSubExpr());
 		} else if(ctx.compoundId() != null) {
