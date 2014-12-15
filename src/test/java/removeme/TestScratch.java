@@ -93,10 +93,10 @@ public class TestScratch extends TestCase {
     }
 
 
-    public void igntestMatch() throws Exception {
+    public void testMatch() throws Exception {
         // TODO
         // Si hacemos OR obj.vec[1] = 20 no devuelve lo que tiene que devoler, pero puesto así sí funciona
-        Iterable<DBObject> ret = query.query("FROM docs MATCH val1 = 0 OR obj.vec = 20");
+        Iterable<DBObject> ret = query.query("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20");
         //"or (data.metric > 4 and data.metric < 4.5)");
         for(DBObject dbo : ret) {
             System.out.println(JSON.serialize(dbo));
@@ -143,7 +143,7 @@ public class TestScratch extends TestCase {
         }
     }
 
-    public void testTest() throws  Exception {
+    public void _testTest() throws  Exception {
         //TODO: GROUP BY val1 AS OrderValue should fail
         String queryString = "FROM docs\n" +
                 "MATCH obj.prop > 3 \n" +
