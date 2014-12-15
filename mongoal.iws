@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iws" afterPath="$PROJECT_DIR$/mongoal.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-    </list>
+    <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="" />
     <ignored path="mongoal.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -941,7 +938,7 @@
       <workItem from="1418223776955" duration="2821000" />
       <workItem from="1418229421279" duration="549000" />
       <workItem from="1418305562742" duration="535000" />
-      <workItem from="1418652119161" duration="2068000" />
+      <workItem from="1418652119161" duration="2226000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project structure">
       <created>1417442365922</created>
@@ -983,11 +980,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43616000" />
+    <option name="totallyTimeSpent" value="43774000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
