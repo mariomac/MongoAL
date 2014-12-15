@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryVisitor.java" afterPath="$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" afterPath="$PROJECT_DIR$/src/test/java/removeme/TestScratch.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iws" afterPath="$PROJECT_DIR$/mongoal.iws" />
     </list>
     <ignored path="mongoal.iws" />
@@ -90,8 +88,8 @@
       <file leaf-file-name="QueryVisitor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryVisitor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5102041" vertical-offset="1305" max-vertical-offset="3885">
-              <caret line="115" column="29" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.53571427" vertical-offset="1305" max-vertical-offset="3885">
+              <caret line="116" column="31" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -942,7 +940,7 @@
       <workItem from="1418223776955" duration="2821000" />
       <workItem from="1418229421279" duration="549000" />
       <workItem from="1418305562742" duration="535000" />
-      <workItem from="1418652119161" duration="342000" />
+      <workItem from="1418652119161" duration="1098000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project structure">
       <created>1417442365922</created>
@@ -984,7 +982,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41890000" />
+    <option name="totallyTimeSpent" value="42646000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -1471,8 +1469,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/es/bsc/mongoal/QueryVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5102041" vertical-offset="1305" max-vertical-offset="3885">
-          <caret line="115" column="29" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.53571427" vertical-offset="1305" max-vertical-offset="3885">
+          <caret line="116" column="31" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="31" />
           <folding />
         </state>
       </provider>
