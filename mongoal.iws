@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6e6b0893-151e-49d1-944a-af53584c93d3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mongoal.iws" afterPath="$PROJECT_DIR$/mongoal.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
     </list>
     <ignored path="mongoal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -108,7 +109,7 @@
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.17128874" vertical-offset="0" max-vertical-offset="1845">
-              <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+              <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -953,7 +954,7 @@
       <workItem from="1418223776955" duration="2821000" />
       <workItem from="1418229421279" duration="549000" />
       <workItem from="1418305562742" duration="535000" />
-      <workItem from="1418652119161" duration="2889000" />
+      <workItem from="1418652119161" duration="3046000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project structure">
       <created>1417442365922</created>
@@ -995,7 +996,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44437000" />
+    <option name="totallyTimeSpent" value="44594000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -1505,7 +1506,7 @@
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17128874" vertical-offset="0" max-vertical-offset="1845">
-          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
           <folding />
         </state>
       </provider>
