@@ -36,3 +36,7 @@ To include MongoAL in your Maven project:
 	        </snapshots>
 	    </repository>
 	</repositories>
+
+
+
+Si te gustan mis aportaciones a github, quizás te gustará mi libro [Del bit a la Nube](http://www.xaas.guru/del-bit-a-la-nube/)
