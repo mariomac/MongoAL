@@ -2,7 +2,6 @@ package es.bsc.mongoal.test;
 
 import es.bsc.mongoal.MongoALLexer;
 import es.bsc.mongoal.MongoALParser;
-import es.bsc.mongoal.QueryGenerator;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;

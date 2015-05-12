@@ -1,84 +1,98 @@
 package es.bsc.mongoal;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.StringTokenizer;
 
-class QueryVisitor extends MongoALBaseVisitor<Object> {
+class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
+
+	private String collectionId;
+
+	public String getCollectionId() {
+		return collectionId;
+	}
 
 	@Override
-	public Object visitQuery(MongoALParser.QueryContext ctx) {
-		Object[] things = new Object[2];
-		things[0] = ctx.collId.getText();
+	public CharSequence visitQuery(MongoALParser.QueryContext ctx) {
+		StringBuilder queryString = new StringBuilder("[");
+		collectionId = ctx.collId.getText();
 		if(ctx.stage() != null && ctx.stage().size() > 0) {
-			List<DBObject> querieslist = new ArrayList<DBObject>();
+			boolean addComma = false;
 			for (MongoALParser.StageContext stage : ctx.stage()) {
-				querieslist.add((DBObject)visit(stage));
+				if(addComma) {
+					queryString.append(',');
+				}
+				queryString.append(visit(stage));
+				addComma = true;
 			}
-			things[1] = querieslist;
 		}
-		return things;
+		queryString.append(']');
+		return queryString;
 	}
 
 	@Override
-	public Object visitMatchStage(@NotNull MongoALParser.MatchStageContext ctx) {
-		return new BasicDBObject("$match",
-				visitLogicalExpression(ctx.logicalExpression()));
+	public CharSequence visitMatchStage(@NotNull MongoALParser.MatchStageContext ctx) {
+		return new StringBuilder("{\"$match\" : ").append(visitLogicalExpression(ctx.logicalExpression())).append('}');
 	}
 
 	@Override
-	public Object visitLogicalExpression(@NotNull MongoALParser.LogicalExpressionContext ctx) {
+	public CharSequence visitLogicalExpression(@NotNull MongoALParser.LogicalExpressionContext ctx) {
 		List<MongoALParser.OrExpressionContext> orExprs = ctx.orExpression();
 		if(orExprs.size() == 1) {
 			return visit(ctx.orExpression(0));
 		} else {
-			BasicDBList dbl = new BasicDBList();
+			StringBuilder sb = new StringBuilder("[");
+			boolean addComma = false;
 			for(MongoALParser.OrExpressionContext c : orExprs) {
-				dbl.add(visit(c));
+				if(addComma) {
+					sb.append(',');
+				}
+				sb.append(visit(c));
+				addComma = true;
 			}
-			return new BasicDBObject("$and",dbl);
+			return sb.append(']');
 		}
 	}
 
 	@Override
-	public Object visitOrExpression(@NotNull MongoALParser.OrExpressionContext ctx) {
+	public CharSequence visitOrExpression(@NotNull MongoALParser.OrExpressionContext ctx) {
 		List<MongoALParser.AtomLogicalExpressionContext> atoms = ctx.atomLogicalExpression();
 		if(atoms.size() == 1) {
 			return visit(ctx.atomLogicalExpression(0));
 		} else {
-			BasicDBList dbl = new BasicDBList();
+			StringBuilder sb = new StringBuilder("[");
+			boolean addComma = false;
 			for(MongoALParser.AtomLogicalExpressionContext a : atoms) {
-				dbl.add(visit(a));
+				if(addComma) {
+					sb.append(',');
+				}
+				sb.append(visit(a));
+				addComma = true;
 			}
-			return new BasicDBObject("$or",dbl);
+			return sb.append(']');
 		}
 	}
 
 	@Override
-	public Object visitAtomLogicalExpression(@NotNull MongoALParser.AtomLogicalExpressionContext ctx) {
+	public CharSequence visitAtomLogicalExpression(@NotNull MongoALParser.AtomLogicalExpressionContext ctx) {
 		// TODO: support NOT operations
 		if(ctx.comparisonExpression() != null) {
-			DBObject comparisonExpression = (DBObject) visit(ctx.comparisonExpression());
-			return comparisonExpression;
+			return visit(ctx.comparisonExpression());
 		} else if(ctx.LPAR() != null && ctx.RPAR() != null) {
 			return visit(ctx.logicalExpression());
 		} else throw new QueryException("On: " + ctx.getText());
 	}
 
 	@Override
-	public Object visitComparisonExpression(@NotNull MongoALParser.ComparisonExpressionContext ctx) {
-		DBObject dbo = new BasicDBObject();
+	public CharSequence visitComparisonExpression(@NotNull MongoALParser.ComparisonExpressionContext ctx) {
+		StringBuilder sb = new StringBuilder("{");
 		if(ctx.OPEQ() != null) {
-			dbo.put(
-					ctx.leftComparison().getText(),
-					visit(ctx.rightComparison())
-			);
+			appendUnescapedString(ctx.leftComparison().getText(), sb);
+			sb.append(':').append(visit(ctx.rightComparison()));
 		} else {
 			String op = null;
 			if(ctx.OPGT() != null) {
@@ -96,51 +110,46 @@ class QueryVisitor extends MongoALBaseVisitor<Object> {
 			} else if(ctx.OPGTE() != null) {
 				op = "$gte";
 			}
-			dbo.put(
-					ctx.leftComparison().getText(),
-					new BasicDBObject(op,visit(ctx.rightComparison()))
-			);
+			appendUnescapedString(ctx.leftComparison().getText(),sb);
+			sb.append(":{\"").append(op).append("\":").append(visit(ctx.rightComparison())).append('}');
 		}
-		return dbo;
+		sb.append('}');
+		return sb;
 	}
 
 	@Override
-	public Object visitRightComparison(@NotNull MongoALParser.RightComparisonContext ctx) {
+	public CharSequence visitRightComparison(@NotNull MongoALParser.RightComparisonContext ctx) {
 		if(ctx.STRING() != null) {
 			String content = ctx.STRING().getText();
 			int length = content.length();
 			// removes initial and final 'simple' or "double" commas
-			return content.substring(1,length-1);
-		} else if(ctx.FLOAT() != null) {
-			return Float.valueOf(ctx.getText());
-		} else if(ctx.INTEGER() != null) {
-			return Long.valueOf(ctx.getText());
+			return content.substring(1, length - 1);
+		} else if(ctx.FLOAT() != null || ctx.INTEGER() != null) {
+			return ctx.getText();
 		} else {
 			throw new QueryException("Right operator: no string, no int, no float? In: " + ctx.getText());
 		}
 	}
 
 	@Override
-	public Object visitGroupStage(@NotNull MongoALParser.GroupStageContext ctx) {
-		DBObject query = new BasicDBObject();
+	public CharSequence visitGroupStage(@NotNull MongoALParser.GroupStageContext ctx) {
+		StringBuilder sb = new StringBuilder("{\"$group\":{");
 		if(ctx.NOTHING() != null) {
-			query.put("_id",null);
+			sb.append("\"_id\":null");
 		} else {
-			query.put("_id", visit(ctx.addSubExpr()));
+			sb.append("\"_id\":").append(visit(ctx.addSubExpr()));
 		}
 		ListIterator<TerminalNode> simpleIds = ctx.SIMPLEID().listIterator();
 		ListIterator<MongoALParser.AccumExprContext> accumExprs = ctx.accumExpr().listIterator();
 		while(simpleIds.hasNext() && accumExprs.hasNext()) {
-			query.put(
-					simpleIds.next().getText(),
-					visit(accumExprs.next())
-			);
+			sb.append(",\"").append(simpleIds.next().getText()).append("\":")
+					.append(accumExprs.next());
 		}
-		return new BasicDBObject("$group",query);
+		return sb.append("}}");
 	}
 
 	@Override
-	public Object visitCompoundId(@NotNull MongoALParser.CompoundIdContext ctx) {
+	public CharSequence visitCompoundId(@NotNull MongoALParser.CompoundIdContext ctx) {
 		StringBuilder sb = new StringBuilder(ctx.SIMPLEID().getText());
 		if(ctx.arrayIndex() != null) {
 			sb.append(".").append(visit(ctx.arrayIndex()));
@@ -152,7 +161,7 @@ class QueryVisitor extends MongoALBaseVisitor<Object> {
 	}
 
 	@Override
-	public Object visitAccumExpr(@NotNull MongoALParser.AccumExprContext ctx) {
+	public CharSequence visitAccumExpr(@NotNull MongoALParser.AccumExprContext ctx) {
 		String opName = null;
 		String id = ctx.SIMPLEID().getText().trim();
 		if(id.equalsIgnoreCase("addtoset")) {
@@ -172,92 +181,124 @@ class QueryVisitor extends MongoALBaseVisitor<Object> {
 		} else if(id.equalsIgnoreCase("sum")) {
 			opName = "$sum";
 		} else throw new QueryException("visitAccumExpr WTF: " + ctx.getText());
-		return new BasicDBObject(opName,visit(ctx.addSubExpr()));
+		return new StringBuilder("{\"").append(opName).append("\":").append(visit(ctx.addSubExpr())).append('\"');
 	}
 
 	@Override
-	public Object visitArrayIndex(@NotNull MongoALParser.ArrayIndexContext ctx) {
+	public CharSequence visitArrayIndex(@NotNull MongoALParser.ArrayIndexContext ctx) {
 		return ctx.INTEGER().getText();
 	}
 
 	@Override
-	public Object visitAddSubExpr(@NotNull MongoALParser.AddSubExprContext ctx) {
-		BasicDBList multDivExprs = null;
-		String operator = null;
+	public CharSequence visitAddSubExpr(@NotNull MongoALParser.AddSubExprContext ctx) {
+		StringBuilder sb = null;
 		if(ctx.ADD() != null) {
-			operator = "$add";
-			multDivExprs = new BasicDBList();
+			sb = new StringBuilder("{\"$add\":[");
 		} else if(ctx.SUB() != null) {
-			operator = "$subtract";
-			multDivExprs = new BasicDBList();
-		}
-		if(multDivExprs == null) {
-			return visit(ctx.multDivExpr(0));
+			sb = new StringBuilder("{\"$subtract\":[");
 		} else {
-			multDivExprs.add(visit(ctx.multDivExpr(0)));
-			multDivExprs.add(visit(ctx.multDivExpr(1)));
-			return new BasicDBObject(operator,multDivExprs);
+			return visit(ctx.multDivExpr(0));
 		}
+		sb.append(visit(ctx.multDivExpr(0)));
+		sb.append(',').append(visit(ctx.multDivExpr(1)));
+		return sb.append("]}");
+
 	}
 
 	@Override
-	public Object visitMultDivExpr(@NotNull MongoALParser.MultDivExprContext ctx) {
-		BasicDBList atomExprs = null;
+	public CharSequence visitMultDivExpr(@NotNull MongoALParser.MultDivExprContext ctx) {
+		StringBuilder sb = null;
 		String operator = null;
 		if(ctx.MULT() != null) {
-			operator = "$multiply";
-			atomExprs = new BasicDBList();
+			sb = new StringBuilder("{\"$multiply\":[");
 		} else if(ctx.DIV() != null) {
-			operator = "$divide";
-			atomExprs = new BasicDBList();
+			sb = new StringBuilder("{\"$divide\":[");
 		} else if(ctx.MOD() != null) {
-			operator = "$mod";
-			atomExprs = new BasicDBList();
-		}
-		if(atomExprs == null) {
-			return visit(ctx.atomExpr(0));
+			sb = new StringBuilder("{\"$mod\":[");
 		} else {
-			atomExprs.add(visit(ctx.atomExpr(0)));
-			atomExprs.add(visit(ctx.atomExpr(1)));
-			return new BasicDBObject(operator,atomExprs);
+			return visit(ctx.atomExpr(0));
 		}
+		sb.append(visit(ctx.atomExpr(0)));
+		sb.append(',').append(visit(ctx.atomExpr(1)));
+		return sb.append("]}");
+
 	}
 
 	@Override
-	public Object visitAtomExpr(@NotNull MongoALParser.AtomExprContext ctx) {
+	public CharSequence visitAtomExpr(@NotNull MongoALParser.AtomExprContext ctx) {
 		if(ctx.FLOAT() != null) {
-			return Float.valueOf(ctx.FLOAT().getText());
+			return (ctx.FLOAT().getText());
 		} else if(ctx.INTEGER() != null) {
-			return Long.valueOf(ctx.INTEGER().getText());
+			return (ctx.INTEGER().getText());
 		} else if(ctx.LPAR() != null && ctx.RPAR() != null) {
 			return visit(ctx.addSubExpr());
 		} else if(ctx.compoundId() != null) {
-			return "$"+visit(ctx.compoundId());
+			return new StringBuilder("$").append(visit(ctx.compoundId()));
 		} else if(ctx.negative() != null) {
 			return visit(ctx.negative());
 		} else throw new QueryException("WTF: "  + ctx.getText());
 	}
 
 	@Override
-	public Object visitNegative(@NotNull MongoALParser.NegativeContext ctx) {
-		BasicDBList dbl = new BasicDBList();
-		dbl.add(0);
-		dbl.add(visit(ctx.addSubExpr()));
-		return new BasicDBObject("$subtract",dbl);
-
+	public CharSequence visitNegative(@NotNull MongoALParser.NegativeContext ctx) {
+		return new StringBuilder("{\"$subtract\":[0,")
+				.append(visit(ctx.addSubExpr()))
+				.append("]}");
 	}
 
 	@Override
-	public Object visitSortStage(@NotNull MongoALParser.SortStageContext ctx) {
-		BasicDBObject sortFields = new BasicDBObject();
+	public CharSequence visitSortStage(@NotNull MongoALParser.SortStageContext ctx) {
+		StringBuilder sb = new StringBuilder("{");
+		boolean addComma = false;
 		for(MongoALParser.SortCriteriaContext sortCriteria : ctx.sortCriteria()) {
 			int order = 1; // by default, ascending ORDER
 			if(sortCriteria.DESCENDING() != null) {
 				order = -1;
 			}
-			sortFields.put(visit(sortCriteria.compoundId()).toString(),order);
+			if(addComma) {
+				sb.append(',');
+			}
+			sb.append('"').append(visit(sortCriteria.compoundId())).append("\":").append(order);
 		}
-		return new BasicDBObject("$sort", sortFields);
+		return sb.append('}');
+	}
+
+	private static void appendUnescapedString(String value, StringBuilder sb) {
+		sb.append('"');
+		// Unescape string
+		StringTokenizer st = new StringTokenizer((String)value,"\t\b\n\f\r\'\"\\",true);
+		while(st.hasMoreTokens()) {
+			String t = st.nextToken();
+			switch (t) {
+				case "\t":
+					sb.append("\\t");
+					break;
+				case "\b":
+					sb.append("\\b");
+					break;
+				case "\n":
+					sb.append("\\n");
+					break;
+				case "\f":
+					sb.append("\\f");
+					break;
+				case "\r":
+					sb.append("\\r");
+					break;
+				case "\'":
+					sb.append("\\'");
+					break;
+				case "\"":
+					sb.append("\\\"");
+					break;
+				case "\\":
+					sb.append("\\\\");
+					break;
+				default:
+					sb.append(t);
+			}
+		}
+		sb.append('"');
 	}
 
 }

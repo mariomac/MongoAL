@@ -31,45 +31,42 @@ public class TestScratch extends TestCase {
     private String dbName;
     private static final String COLLECTION_NAME = "docs";
 
-    MongoClient client;
-    QueryGenerator query;
-    DB db;
-    DBCollection collection;
-
-    @Override
-    public void setUp() throws Exception {
-
-        dbName = "mongoaltest-" + UUID.randomUUID();
-
-        client = new MongoClient(HOST,PORT);
-        db = client.getDB(dbName);
-
-
-        // Insert data
-
-        collection = db.getCollection(COLLECTION_NAME);
-
-        collection.insert((DBObject)JSON.parse("{'val1':2,'obj':{'prop':2,'vec':[4,5,6]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':3,'obj':{'prop':1,'vec':[1,2,3]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':1,'obj':{'prop':3,'vec':[7,8,9]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':20,'obj':{'prop':6,'vec':[16,17,18]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':10,'obj':{'prop':5,'vec':[13,14,15]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':30,'obj':{'prop':7,'vec':[19,20,21]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':4,'vec':[10,11,12]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':3,'vec':[10,11,12]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':7,'vec':[10,11,12]}}"));
-        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':5,'vec':[10,11,12]}}"));
-
-
-        query = new QueryGenerator(db);
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        Logger.getLogger(getClass().getName()).info("Dropping database and closing client...");
-        client.dropDatabase(dbName);
-        client.close();
-    }
+//    MongoClient client;
+//    DB db;
+//    DBCollection collection;
+//
+//    @Override
+//    public void setUp() throws Exception {
+//
+//        dbName = "mongoaltest-" + UUID.randomUUID();
+//
+//        client = new MongoClient(HOST,PORT);
+//        db = client.getDB(dbName);
+//
+//
+//        // Insert data
+//
+//        collection = db.getCollection(COLLECTION_NAME);
+//
+//        collection.insert((DBObject)JSON.parse("{'val1':2,'obj':{'prop':2,'vec':[4,5,6]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':3,'obj':{'prop':1,'vec':[1,2,3]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':1,'obj':{'prop':3,'vec':[7,8,9]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':20,'obj':{'prop':6,'vec':[16,17,18]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':10,'obj':{'prop':5,'vec':[13,14,15]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':30,'obj':{'prop':7,'vec':[19,20,21]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':4,'vec':[10,11,12]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':3,'vec':[10,11,12]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':7,'vec':[10,11,12]}}"));
+//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':5,'vec':[10,11,12]}}"));
+//
+//    }
+//
+//    @Override
+//    public void tearDown() throws Exception {
+//        Logger.getLogger(getClass().getName()).info("Dropping database and closing client...");
+//        client.dropDatabase(dbName);
+//        client.close();
+//    }
 
     public void igntestGroup() throws Exception {
 
@@ -77,7 +74,7 @@ public class TestScratch extends TestCase {
         // max(obj.vec) as maxVector deberia devolver un entero. Devuelve un array vacío
         // si ponemos 'AS ...' dos veces con el mismo identificador, debería dar error
         // que de un error avisando si el SIMPLEID que representa el acumulador no es correcto
-        Iterable<DBObject> ret = query.query("FROM docs " +
+		System.out.println("FROM docs " +
                         "GROUP BY NOTHING \n" +
                         "avg(val1) AS avg\n"+
                         "max(val1) AS max\n"+
@@ -85,22 +82,21 @@ public class TestScratch extends TestCase {
                         "avg(obj.prop) as propAccess\n" +
                         "max(obj.vec) as maxVector" // esto debería dar un valor
         );
-
-        //"or (data.metric > 4 and data.metric < 4.5)");
-        for(DBObject dbo : ret) {
-            System.out.println(JSON.serialize(dbo));
-        }
+		JSON.parse(new QueryGenerator("FROM docs " +
+				"GROUP BY NOTHING \n" +
+				"avg(val1) AS avg\n"+
+				"max(val1) AS max\n"+
+				"min(val1) as min\n"+
+				"avg(obj.prop) as propAccess\n" +
+				"max(obj.vec) as maxVector").getJsonQueryString());
     }
 
 
     public void testMatch() throws Exception {
         // TODO
         // Si hacemos OR obj.vec[1] = 20 no devuelve lo que tiene que devoler, pero puesto así sí funciona
-        Iterable<DBObject> ret = query.query("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20");
-        //"or (data.metric > 4 and data.metric < 4.5)");
-        for(DBObject dbo : ret) {
-            System.out.println(JSON.serialize(dbo));
-        }
+		System.out.println("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20");
+		JSON.parse(new QueryGenerator("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20").getJsonQueryString());
     }
 
     public void ign_testOrderGrammar() throws Exception {
@@ -114,10 +110,10 @@ public class TestScratch extends TestCase {
                 "FROM docs SORT BY obj.vec[1] DESCENDING",
                 "FROM docs SORT BY obj.vec, janders ASCENDING, thing DESCENDING",
         };
-
-        for(String query : queries) {
-            assertEquals(ErrorReport.getReport(query).count(), 0);
-        }
+		for(String str : queries) {
+			System.out.println(new QueryGenerator(str));
+			JSON.parse(new QueryGenerator(str).getJsonQueryString());
+		}
     }
 
     public void _testOrderBy() throws Exception {
@@ -136,11 +132,9 @@ public class TestScratch extends TestCase {
         };
 
         for(String str : queries) {
-            System.out.println("***** Executing: " + str);
-            for(DBObject dbo : query.query(str)) {
-                System.out.println(JSON.serialize(dbo));
-            }
-        }
+			System.out.println(new QueryGenerator(str));
+			JSON.parse(new QueryGenerator(str).getJsonQueryString());
+		}
     }
 
     public void _testTest() throws  Exception {
@@ -152,10 +146,9 @@ public class TestScratch extends TestCase {
                 "sum(obj.prop) AS Field2 \n" +
                 "sum(obj.prop + val1) AS FieldsSum \n" +
                 "SORT BY _id ASCENDING";
-        System.out.println(queryString);
-        for(DBObject dbo : query.query(queryString)) {
-            System.out.println(JSON.serialize(dbo));
-        }
+		System.out.println(new QueryGenerator(queryString));
+		JSON.parse(new QueryGenerator(queryString).getJsonQueryString());
 
-    }
+
+	}
 }

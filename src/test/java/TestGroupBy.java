@@ -16,15 +16,7 @@ import java.net.UnknownHostException;
 public class TestGroupBy {
 	@Test
 	public void testGroupBy() throws UnknownHostException {
-		String host = "localhost";
-		int port = 27017;
-		String dbName = "applicationmonitor";
-
-		MongoClient client = new MongoClient(host,port);
-		DB db = client.getDB(dbName);
-
-		QueryGenerator query = new QueryGenerator(db);
-		Iterable<DBObject> ret = query.query("FROM events " +
+		String q =("FROM events " +
 				"GROUP BY NOTHING \n" +
 				"avg(timestamp) AS avgtime\n"+
 				"max(timestamp) AS maxtime\n"+
@@ -32,12 +24,8 @@ public class TestGroupBy {
 						"avg(jarpleich) as jarpleicher"
 		);
 
-		//"or (data.metric > 4 and data.metric < 4.5)");
-		for(DBObject dbo : ret) {
-			System.out.println(JSON.serialize(dbo));
-		}
-
-		client.close();
+		System.out.println("q = " + q);
+		JSON.parse(new QueryGenerator(q).toString());
 //
 //		ret = query.query("FROM events MATCH data.metric = 0.0");
 //		System.out.println("ret[0] = " + ret[0]);
