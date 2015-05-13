@@ -24,19 +24,5 @@ Into something like this:
 		{ "$sort" : { "FieldsSum" : -1}}
 		]);
 
-To include MongoAL in your Maven project:
-
-	<repositories>
-	    <repository>
-	        <id>mongoal-mvn-repo</id>
-	        <url>https://raw.githubusercontent.com/mariomac/MongoAL/master/mvn-repo</url>
-	        <snapshots>
-	            <enabled>true</enabled>
-	            <!--updatePolicy>always</updatePolicy-->
-	        </snapshots>
-	    </repository>
-	</repositories>
-
-
 
 Si te gustan mis aportaciones a github, quizás te gustará mi libro [Del bit a la Nube](http://www.xaas.guru/del-bit-a-la-nube/)

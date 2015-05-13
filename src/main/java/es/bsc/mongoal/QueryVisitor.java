@@ -122,8 +122,10 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		if(ctx.STRING() != null) {
 			String content = ctx.STRING().getText();
 			int length = content.length();
+			StringBuilder sb = new StringBuilder();
 			// removes initial and final 'simple' or "double" commas
-			return content.substring(1, length - 1);
+			appendUnescapedString("-"+content.substring(1, length - 1),sb);
+			return sb;
 		} else if(ctx.FLOAT() != null || ctx.INTEGER() != null) {
 			return ctx.getText();
 		} else {
@@ -143,7 +145,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		ListIterator<MongoALParser.AccumExprContext> accumExprs = ctx.accumExpr().listIterator();
 		while(simpleIds.hasNext() && accumExprs.hasNext()) {
 			sb.append(",\"").append(simpleIds.next().getText()).append("\":")
-					.append(accumExprs.next());
+					.append(visit(accumExprs.next()));
 		}
 		return sb.append("}}");
 	}
@@ -181,7 +183,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		} else if(id.equalsIgnoreCase("sum")) {
 			opName = "$sum";
 		} else throw new QueryException("visitAccumExpr WTF: " + ctx.getText());
-		return new StringBuilder("{\"").append(opName).append("\":").append(visit(ctx.addSubExpr())).append('\"');
+		return new StringBuilder("{\"").append(opName).append("\":").append(visit(ctx.addSubExpr())).append('}');
 	}
 
 	@Override
@@ -233,7 +235,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		} else if(ctx.LPAR() != null && ctx.RPAR() != null) {
 			return visit(ctx.addSubExpr());
 		} else if(ctx.compoundId() != null) {
-			return new StringBuilder("$").append(visit(ctx.compoundId()));
+			return new StringBuilder("\"$").append(visit(ctx.compoundId())).append('"');
 		} else if(ctx.negative() != null) {
 			return visit(ctx.negative());
 		} else throw new QueryException("WTF: "  + ctx.getText());
@@ -258,6 +260,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			if(addComma) {
 				sb.append(',');
 			}
+			addComma = true;
 			sb.append('"').append(visit(sortCriteria.compoundId())).append("\":").append(order);
 		}
 		return sb.append('}');

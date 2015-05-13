@@ -68,7 +68,7 @@ public class TestScratch extends TestCase {
 //        client.close();
 //    }
 
-    public void igntestGroup() throws Exception {
+    public void testGroup() throws Exception {
 
         // TODO sacadas de aqui
         // max(obj.vec) as maxVector deberia devolver un entero. Devuelve un array vacío
@@ -99,7 +99,7 @@ public class TestScratch extends TestCase {
 		JSON.parse(new QueryGenerator("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20").getJsonQueryString());
     }
 
-    public void ign_testOrderGrammar() throws Exception {
+    public void testOrderGrammar() throws Exception {
         System.out.println("Test Order Grammar");
         String[] queries = {
                 "FROM docs SORT BY val1",
@@ -116,7 +116,7 @@ public class TestScratch extends TestCase {
 		}
     }
 
-    public void _testOrderBy() throws Exception {
+    public void testOrderBy() throws Exception {
         // TODO: no funcionan
         // FROM docs SORT BY obj.vec[1] DESCENDING
         String[] queries = {
@@ -129,6 +129,7 @@ public class TestScratch extends TestCase {
                 "FROM docs SORT BY obj.vec, janders ASCENDING, thing DESCENDING",
                 "FROM docs SORT BY obj.prop, val1 DESCENDING",
                 "FROM docs SORT BY val1 ASCENDING, obj.prop DESCENDING",
+				"FROM docs MATCH jarl = \"QuePasaPerracus\""
         };
 
         for(String str : queries) {
@@ -137,7 +138,7 @@ public class TestScratch extends TestCase {
 		}
     }
 
-    public void _testTest() throws  Exception {
+    public void testTest() throws  Exception {
         //TODO: GROUP BY val1 AS OrderValue should fail
         String queryString = "FROM docs\n" +
                 "MATCH obj.prop > 3 \n" +
