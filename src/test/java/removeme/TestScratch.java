@@ -120,6 +120,10 @@ public class TestScratch extends TestCase {
         // TODO: no funcionan
         // FROM docs SORT BY obj.vec[1] DESCENDING
         String[] queries = {
+				"FROM events MATCH appId = 'SinusApp'  AND timestamp > 1431589934576 AND timestamp <= 1431589944576 GROUP BY NOTHING  avg(data.metric) as metric",
+				"FROM docs MATCH ajarr > 3 AND ajarr < 4",
+				"FROM DOCS MATCH ajurr > 3 OR ajurr <4",
+				"FROM DOCS MATCH (quepasanen <= 3 OR quepasatio > 3) AND tralari = \"hola\"",
                 "FROM docs SORT BY val1",
                 "FROM docs SORT BY val1 ASCENDING",
                 "FROM docs SORT BY val1 DESCENDING",
@@ -133,7 +137,7 @@ public class TestScratch extends TestCase {
         };
 
         for(String str : queries) {
-			System.out.println(new QueryGenerator(str));
+			System.out.println(str + " --> " + new QueryGenerator(str));
 			JSON.parse(new QueryGenerator(str).getJsonQueryString());
 		}
     }

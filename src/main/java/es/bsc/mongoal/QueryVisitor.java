@@ -36,7 +36,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 
 	@Override
 	public CharSequence visitMatchStage(@NotNull MongoALParser.MatchStageContext ctx) {
-		return new StringBuilder("{\"$match\" : ").append(visitLogicalExpression(ctx.logicalExpression())).append('}');
+		return new StringBuilder("{\"$match\":{").append(visitLogicalExpression(ctx.logicalExpression())).append("}}");
 	}
 
 	@Override
@@ -45,13 +45,13 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		if(orExprs.size() == 1) {
 			return visit(ctx.orExpression(0));
 		} else {
-			StringBuilder sb = new StringBuilder("[");
+			StringBuilder sb = new StringBuilder("\"$and\":[");
 			boolean addComma = false;
 			for(MongoALParser.OrExpressionContext c : orExprs) {
 				if(addComma) {
 					sb.append(',');
 				}
-				sb.append(visit(c));
+				sb.append('{').append(visit(c)).append('}');;
 				addComma = true;
 			}
 			return sb.append(']');
@@ -64,13 +64,13 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		if(atoms.size() == 1) {
 			return visit(ctx.atomLogicalExpression(0));
 		} else {
-			StringBuilder sb = new StringBuilder("[");
+			StringBuilder sb = new StringBuilder("\"$or\" : [");
 			boolean addComma = false;
 			for(MongoALParser.AtomLogicalExpressionContext a : atoms) {
 				if(addComma) {
 					sb.append(',');
 				}
-				sb.append(visit(a));
+				sb.append('{').append(visit(a)).append('}');
 				addComma = true;
 			}
 			return sb.append(']');
@@ -89,7 +89,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 
 	@Override
 	public CharSequence visitComparisonExpression(@NotNull MongoALParser.ComparisonExpressionContext ctx) {
-		StringBuilder sb = new StringBuilder("{");
+		StringBuilder sb = new StringBuilder();
 		if(ctx.OPEQ() != null) {
 			appendUnescapedString(ctx.leftComparison().getText(), sb);
 			sb.append(':').append(visit(ctx.rightComparison()));
@@ -113,7 +113,6 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			appendUnescapedString(ctx.leftComparison().getText(),sb);
 			sb.append(":{\"").append(op).append("\":").append(visit(ctx.rightComparison())).append('}');
 		}
-		sb.append('}');
 		return sb;
 	}
 
@@ -124,7 +123,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			int length = content.length();
 			StringBuilder sb = new StringBuilder();
 			// removes initial and final 'simple' or "double" commas
-			appendUnescapedString("-"+content.substring(1, length - 1),sb);
+			appendUnescapedString(content.substring(1, length - 1),sb);
 			return sb;
 		} else if(ctx.FLOAT() != null || ctx.INTEGER() != null) {
 			return ctx.getText();
