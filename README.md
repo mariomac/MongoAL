@@ -24,5 +24,8 @@ Into something like this:
 		{ "$sort" : { "FieldsSum" : -1}}
 		]);
 
+Didn't had time to document this. Please have a look to the [ANTLR4 Grammar file](src/main/MongoAL.g4) as a bad substitute.
 
+
+## ---
 Si te gustan mis aportaciones a github, quizás te gustará mi libro [Del bit a la Nube](http://www.xaas.guru/del-bit-a-la-nube/)

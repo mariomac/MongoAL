@@ -1,8 +1,5 @@
-import com.mongodb.DB;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
-import es.bsc.mongoal.QueryGenerator;
+import es.bsc.mongoal.MongoQuery;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,7 +22,7 @@ public class TestGroupBy {
 		);
 
 		System.out.println("q = " + q);
-		JSON.parse(new QueryGenerator(q).toString());
+		JSON.parse(MongoQuery.translateQuery(q).toString());
 //
 //		ret = query.query("FROM events MATCH data.metric = 0.0");
 //		System.out.println("ret[0] = " + ret[0]);

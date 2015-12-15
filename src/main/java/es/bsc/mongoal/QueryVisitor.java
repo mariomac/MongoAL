@@ -1,9 +1,15 @@
+/*
+ * This code is distributed under a Beer-Ware license: Mario Macías wrote it. Considering this, you can do whatever
+ * you want with it: modifying, resdistributing, selling... But you always must credit me as an author of the code.
+ * In addition, if you meet me someday and think this code has been useful for you, you are obligued to buy me a
+ * beer as a payment for my contribution. If it's possible, a good beer.
+ */
+
 package es.bsc.mongoal;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
@@ -84,7 +90,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			return visit(ctx.comparisonExpression());
 		} else if(ctx.LPAR() != null && ctx.RPAR() != null) {
 			return visit(ctx.logicalExpression());
-		} else throw new QueryException("On: " + ctx.getText());
+		} else throw new MongoQueryException("On: " + ctx.getText());
 	}
 
 	@Override
@@ -128,7 +134,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 		} else if(ctx.FLOAT() != null || ctx.INTEGER() != null) {
 			return ctx.getText();
 		} else {
-			throw new QueryException("Right operator: no string, no int, no float? In: " + ctx.getText());
+			throw new MongoQueryException("Right operator: no string, no int, no float? In: " + ctx.getText());
 		}
 	}
 
@@ -181,7 +187,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			opName = "$push";
 		} else if(id.equalsIgnoreCase("sum")) {
 			opName = "$sum";
-		} else throw new QueryException("visitAccumExpr WTF: " + ctx.getText());
+		} else throw new MongoQueryException("visitAccumExpr WTF: " + ctx.getText());
 		return new StringBuilder("{\"").append(opName).append("\":").append(visit(ctx.addSubExpr())).append('}');
 	}
 
@@ -237,7 +243,7 @@ class QueryVisitor extends MongoALBaseVisitor<CharSequence> {
 			return new StringBuilder("\"$").append(visit(ctx.compoundId())).append('"');
 		} else if(ctx.negative() != null) {
 			return visit(ctx.negative());
-		} else throw new QueryException("WTF: "  + ctx.getText());
+		} else throw new MongoQueryException("WTF: "  + ctx.getText());
 	}
 
 	@Override

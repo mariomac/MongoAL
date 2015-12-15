@@ -5,20 +5,10 @@
  */
 package removeme;
 
-import com.mongodb.*;
 import com.mongodb.util.JSON;
 
-import es.bsc.mongoal.QueryGenerator;
-import es.bsc.mongoal.test.ErrorReport;
+import es.bsc.mongoal.MongoQuery;
 import junit.framework.TestCase;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.net.UnknownHostException;
-import java.util.UUID;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,47 +16,6 @@ import java.util.logging.Logger;
  */
 
 public class TestScratch extends TestCase {
-    public static final String HOST = "localhost";
-    public static final int PORT = 27017;
-    private String dbName;
-    private static final String COLLECTION_NAME = "docs";
-
-//    MongoClient client;
-//    DB db;
-//    DBCollection collection;
-//
-//    @Override
-//    public void setUp() throws Exception {
-//
-//        dbName = "mongoaltest-" + UUID.randomUUID();
-//
-//        client = new MongoClient(HOST,PORT);
-//        db = client.getDB(dbName);
-//
-//
-//        // Insert data
-//
-//        collection = db.getCollection(COLLECTION_NAME);
-//
-//        collection.insert((DBObject)JSON.parse("{'val1':2,'obj':{'prop':2,'vec':[4,5,6]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':3,'obj':{'prop':1,'vec':[1,2,3]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':1,'obj':{'prop':3,'vec':[7,8,9]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':20,'obj':{'prop':6,'vec':[16,17,18]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':10,'obj':{'prop':5,'vec':[13,14,15]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':30,'obj':{'prop':7,'vec':[19,20,21]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':4,'vec':[10,11,12]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':3,'vec':[10,11,12]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':7,'vec':[10,11,12]}}"));
-//        collection.insert((DBObject)JSON.parse("{'val1':0,'obj':{'prop':5,'vec':[10,11,12]}}"));
-//
-//    }
-//
-//    @Override
-//    public void tearDown() throws Exception {
-//        Logger.getLogger(getClass().getName()).info("Dropping database and closing client...");
-//        client.dropDatabase(dbName);
-//        client.close();
-//    }
 
     public void testGroup() throws Exception {
 
@@ -74,15 +23,7 @@ public class TestScratch extends TestCase {
         // max(obj.vec) as maxVector deberia devolver un entero. Devuelve un array vacío
         // si ponemos 'AS ...' dos veces con el mismo identificador, debería dar error
         // que de un error avisando si el SIMPLEID que representa el acumulador no es correcto
-		System.out.println("FROM docs " +
-                        "GROUP BY NOTHING \n" +
-                        "avg(val1) AS avg\n"+
-                        "max(val1) AS max\n"+
-                        "min(val1) as min\n"+
-                        "avg(obj.prop) as propAccess\n" +
-                        "max(obj.vec) as maxVector" // esto debería dar un valor
-        );
-		JSON.parse(new QueryGenerator("FROM docs " +
+		JSON.parse(MongoQuery.translateQuery("FROM docs " +
 				"GROUP BY NOTHING \n" +
 				"avg(val1) AS avg\n"+
 				"max(val1) AS max\n"+
@@ -96,7 +37,7 @@ public class TestScratch extends TestCase {
         // TODO
         // Si hacemos OR obj.vec[1] = 20 no devuelve lo que tiene que devoler, pero puesto así sí funciona
 		System.out.println("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20");
-		JSON.parse(new QueryGenerator("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20").getJsonQueryString());
+		JSON.parse(MongoQuery.translateQuery("FROM docs MATCH val1 < 1418551830051 OR obj.vec = 20").getJsonQueryString());
     }
 
     public void testOrderGrammar() throws Exception {
@@ -111,8 +52,9 @@ public class TestScratch extends TestCase {
                 "FROM docs SORT BY obj.vec, janders ASCENDING, thing DESCENDING",
         };
 		for(String str : queries) {
-			System.out.println(new QueryGenerator(str));
-			JSON.parse(new QueryGenerator(str).getJsonQueryString());
+			System.out.println(MongoQuery.translateQuery(str));
+			JSON.parse(
+					MongoQuery.translateQuery(str).getJsonQueryString());
 		}
     }
 
@@ -137,8 +79,7 @@ public class TestScratch extends TestCase {
         };
 
         for(String str : queries) {
-			System.out.println(str + " --> " + new QueryGenerator(str));
-			JSON.parse(new QueryGenerator(str).getJsonQueryString());
+			JSON.parse(MongoQuery.translateQuery(str).getJsonQueryString());
 		}
     }
 
@@ -151,8 +92,8 @@ public class TestScratch extends TestCase {
                 "sum(obj.prop) AS Field2 \n" +
                 "sum(obj.prop + val1) AS FieldsSum \n" +
                 "SORT BY _id ASCENDING";
-		System.out.println(new QueryGenerator(queryString));
-		JSON.parse(new QueryGenerator(queryString).getJsonQueryString());
+		System.out.println(MongoQuery.translateQuery(queryString));
+		JSON.parse(MongoQuery.translateQuery(queryString).getJsonQueryString());
 
 
 	}
